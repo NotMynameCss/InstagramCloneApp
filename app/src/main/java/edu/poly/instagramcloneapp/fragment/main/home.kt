@@ -1,4 +1,4 @@
-package edu.poly.instagramcloneapp.fragment
+package edu.poly.instagramcloneapp.fragment.main
 
 // Connect firebase:  https://www.youtube.com/watch?v=YOT8P1PtJQg&t=618s
 //Viewbinding in fragment: https://www.youtube.com/watch?v=v11x54y5YVc
