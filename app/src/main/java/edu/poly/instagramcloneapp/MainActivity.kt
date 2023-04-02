@@ -3,15 +3,13 @@ package edu.poly.instagramcloneapp
 //Change start Acitivity: https://www.youtube.com/watch?v=6eES56mxfMs
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import edu.poly.instagramcloneapp.databinding.ActivityMainBinding
-import edu.poly.instagramcloneapp.fragment.*
+import edu.poly.instagramcloneapp.fragment.main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var textMessage: TextView
     private lateinit var binding: ActivityMainBinding
 
 
@@ -42,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-
+    setContentView(binding.root)
     }
     //    create fragment for bottom_nav
     private fun replaceFragment(fragment: Fragment){
