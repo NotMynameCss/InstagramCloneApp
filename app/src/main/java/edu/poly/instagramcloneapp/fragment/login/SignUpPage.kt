@@ -8,11 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import edu.poly.instagramcloneapp.MainActivity
-import edu.poly.instagramcloneapp.R
-import edu.poly.instagramcloneapp.databinding.FragmentHomeBinding
 import edu.poly.instagramcloneapp.databinding.FragmentSignUpPageBinding
 import edu.poly.instagramcloneapp.login
 //Email Verification: https://www.youtube.com/watch?v=8wQ8QacTIVA&t=389s

@@ -1,6 +1,14 @@
 package edu.poly.instagramcloneapp.model
 
+
+
+//Upload Profile: https://www.youtube.com/watch?v=UDgMEmqEybc&list=PPSV
+
+
 data class UserModel(
-    var user_id:String? = null,
-    var email_User:String? = null
+    var uid:String? = null,
+    var name:String? = null,
+    var email:String? = null,
+    var imageUrl:String? = null,
+
 )

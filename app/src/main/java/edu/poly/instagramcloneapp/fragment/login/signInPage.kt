@@ -71,6 +71,7 @@ class signInPage : Fragment() {
                     val confirmEmail = firebaseAuth.currentUser?.isEmailVerified
                     if (confirmEmail == true){
                         val intent = Intent(requireActivity(), MainActivity::class.java)
+
                         startActivity(intent)
                     } else{
                         Toast.makeText(requireActivity(), "Your email Not check yet", Toast.LENGTH_SHORT).show()

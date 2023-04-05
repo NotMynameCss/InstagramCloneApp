@@ -5,7 +5,7 @@ package edu.poly.instagramcloneapp.fragment.main
     // Connect firebase:  https://www.youtube.com/watch?v=YOT8P1PtJQg&t=618s
     //Viewbinding in fragment: https://www.youtube.com/watch?v=v11x54y5YVc
     //SignIn and SignOut : https://www.youtube.com/watch?v=idbxxkF1l6k&list=PLQFUWT9wUMWEXj9AVanMZg1tRUGr95aBr&index=10&t=784s
-    //Upload Image: https://www.youtube.com/watch?v=GmpD2DqQYVk
+    //Upload ảnh: https://www.youtube.com/watch?v=GmpD2DqQYVk
 import android.app.Activity
 import android.app.ProgressDialog
 
@@ -21,13 +21,10 @@ import android.widget.Toast
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-import edu.poly.instagramcloneapp.MainActivity
-import edu.poly.instagramcloneapp.databinding.ActivityMainBinding
+
 import edu.poly.instagramcloneapp.databinding.FragmentHomeBinding
-import edu.poly.instagramcloneapp.model.UserModel
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.logging.SimpleFormatter
 
 
 class home : Fragment() {
@@ -51,11 +48,12 @@ class home : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        //firebase Object
-            dbRef = FirebaseDatabase.getInstance().getReference("User")
-        //Chung của firebase
+
+        //Chung của Home
 
             binding = FragmentHomeBinding.inflate(layoutInflater)
+        //firebase Object
+            dbRef = FirebaseDatabase.getInstance().getReference("User")
         //Image Firebase
             binding.Pick.setOnClickListener {
                 pickImage()
@@ -83,7 +81,7 @@ class home : Fragment() {
 //
 //    }
     //Image Firebase
-        private fun UploadImage(){
+       private  fun UploadImage(){
 
             val progressDialog = ProgressDialog(requireActivity())
             progressDialog.setMessage("UploadImage ...")
@@ -95,7 +93,6 @@ class home : Fragment() {
             //Date Upload
             val formatter = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
             val now = Date()
-
             // Tạo thư mục lưu Image
                 val fileName = formatter.format(now)
                 val storageReference = FirebaseStorage.getInstance().getReference("images/$fileName")
@@ -104,7 +101,7 @@ class home : Fragment() {
                 storageReference.putFile(imageUri)
                 .addOnSuccessListener {
                     binding.imageView.setImageURI(null)
-                    Toast.makeText(requireActivity(),"SuccessFull Uploaded",Toast.LENGTH_SHORT)
+                    Toast.makeText(requireActivity(),"SuccessFull Uploaded",Toast.LENGTH_SHORT).show()
                     if (progressDialog.isShowing){
                         progressDialog.dismiss()
                     }
@@ -112,16 +109,17 @@ class home : Fragment() {
                 .addOnFailureListener {
                     if (progressDialog.isShowing){
                         progressDialog.dismiss()
-                        Toast.makeText(requireActivity(),"Failed",Toast.LENGTH_SHORT)
+                        Toast.makeText(requireActivity(),"Failed",Toast.LENGTH_SHORT).show()
 
                     }
                 }
         }
 
-        private fun pickImage(){
+    private fun pickImage(){
 
         val intent = Intent()
         intent.type = "image/*" //* cho phép tất cả loại ảnh: JPEG,PNG,.....
+
         intent.action = Intent.ACTION_GET_CONTENT
 
         startActivityForResult(intent,100)
@@ -130,6 +128,7 @@ class home : Fragment() {
     //Support for Image
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
 
         if (requestCode == 100 && resultCode == Activity.RESULT_OK){ //Acitivity is need if this is fragment
 

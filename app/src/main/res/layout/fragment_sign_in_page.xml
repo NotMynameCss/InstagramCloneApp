@@ -26,29 +26,57 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                android:id="@+id/email_Login"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/action_sign_in"
-                android:inputType="textWebEmailAddress|textEmailAddress"
-                android:minHeight="48dp" />
+                android:orientation="horizontal" />
 
-            <EditText
-                android:id="@+id/pass_login"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/action_sign_in"
-                android:inputType="textPassword|textWebPassword"
-                android:minHeight="48dp" />
+                android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/sumbit_Login"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Sumbit" />
+                <EditText
+                    android:id="@+id/email_Login"
+                    android:layout_width="318dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="44dp"
+                    android:ems="10"
+                    android:hint="@string/action_sign_in"
+                    android:inputType="textWebEmailAddress|textEmailAddress"
+                    android:minHeight="48dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.505"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/pass_login"
+                    android:layout_width="320dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="19dp"
+                    android:layout_marginBottom="21dp"
+                    android:ems="10"
+                    android:hint="@string/action_sign_in"
+                    android:inputType="textPassword|textWebPassword"
+                    android:minHeight="48dp"
+                    app:layout_constraintBottom_toTopOf="@+id/sumbit_Login"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.494"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/email_Login"
+                    app:layout_constraintVertical_bias="0.538" />
+
+                <Button
+                    android:id="@+id/sumbit_Login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="196dp"
+                    android:text="Sumbit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
