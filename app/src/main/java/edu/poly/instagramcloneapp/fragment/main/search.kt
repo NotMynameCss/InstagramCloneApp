@@ -1,60 +1,73 @@
 package edu.poly.instagramcloneapp.fragment.main
 
+import android.app.ProgressDialog
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import edu.poly.instagramcloneapp.R
+import android.widget.Toast
+import com.google.firebase.storage.FirebaseStorage
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import edu.poly.instagramcloneapp.databinding.FragmentSearchBinding
+import java.io.File
 
-/**
- * A simple [Fragment] subclass.
- * Use the [search.newInstance] factory method to
- * create an instance of this fragment.
- */
+//tìm ảnh và hiện: https://www.youtube.com/watch?v=A2-v2VFwLY0
+//Upload ảnh: https://www.youtube.com/watch?v=GmpD2DqQYVk
 class search : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private lateinit var binding: FragmentSearchBinding
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false)
+
+        binding = FragmentSearchBinding.inflate(layoutInflater)
+
+        binding.searchbtn.setOnClickListener {
+
+
+            //Show Hội thoại
+            val progressDialog = ProgressDialog(requireActivity())
+            progressDialog.setMessage("Fetching data ...")
+            progressDialog.setCancelable(false)
+            progressDialog.show()
+
+
+            val imageName = binding.ImageName.text.toString()
+
+            //Định dạng ảnh mặc định firebase là Jpeg
+                val storageRef = FirebaseStorage.getInstance().reference.child("images/$imageName")
+                val localFile = File.createTempFile("tempImage","jpg")
+            //Tìm ảnh dựa trên val imagename
+                storageRef.getFile(localFile).addOnSuccessListener {
+
+                if (progressDialog.isShowing)
+                    progressDialog.dismiss()
+
+                //Dịch ngược từ máy để ra tên ảnh
+                val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
+                //Đặt ảnh
+                binding.imageView2.setImageBitmap(bitmap)
+            }.addOnFailureListener {
+                if (progressDialog.isShowing)
+                    progressDialog.dismiss()
+                Toast.makeText(requireActivity(), "Don't Have", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment search.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            search().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }

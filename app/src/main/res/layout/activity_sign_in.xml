@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:orientation="horizontal">
 
         <Button
@@ -21,20 +21,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="SignIn" />
 
         <Button
             android:id="@+id/signUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="SignUp" />
     </LinearLayout>
 
     <FrameLayout
         android:id="@+id/frame_login"
         android:layout_width="match_parent"
-        android:layout_height="540dp">
+        android:layout_height="@dimen/_540sdp">
 
     </FrameLayout>
 </RelativeLayout>
