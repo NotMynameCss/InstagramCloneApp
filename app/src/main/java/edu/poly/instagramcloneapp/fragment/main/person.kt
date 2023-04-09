@@ -39,16 +39,15 @@ class person : Fragment() {
     //Chung của Fragment
         private lateinit var binding:FragmentPersonBinding
 
-    //FireBase Database, Cloud Storage: dùng lưu thông tin, ảnh của User
+    //Chung Của Firebase
         private lateinit var database: FirebaseDatabase
         private lateinit var storage: FirebaseStorage
-        private lateinit var imageUri: Uri
-    // Update data FIrebase
         private lateinit var databaseReference: DatabaseReference
-
-
-    //Firebase Auth: ACcount
+        //For SelectImage
+        private lateinit var imageUri: Uri
+        //Firebase Auth: ACcount
         private lateinit var firebaseAuth: FirebaseAuth
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,41 +65,14 @@ class person : Fragment() {
             storage = FirebaseStorage.getInstance()
             database = FirebaseDatabase.getInstance()
 
+        //Retrive for Info
+        retrivieInfo()
 
-        //View
-            val user_Info = firebaseAuth.currentUser
-
-            binding.emailPerson.setText("${user_Info?.email}")
-        //Retrive
-            databaseReference = FirebaseDatabase.getInstance().getReference("users")
-            databaseReference.child(firebaseAuth.uid.toString()).addValueEventListener(
-                object : ValueEventListener{
-                    override fun onDataChange(snapshot: DataSnapshot) {
-
-                        val user: UserModel? = snapshot.getValue(UserModel::class.java)
-                        binding.namePerson.setText(user?.name)
-
-
-                        Glide.with(requireActivity())
-                            .load(user?.imageUrl)
-                            .fallback(R.drawable.notification_bg_normal_pressed)
-                            .fitCenter()
-                            .into(binding.imageView3)
-
-
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
-                    }
-
-                }
-            )
-        //Select Image (Yes)
+        //Select Image
             binding.imageView3.setOnClickListener{
                 pickImage()
             }
-        //Upload Profile / 11:04
+        //Upload Profile Info
             binding.sumbitProfile.setOnClickListener {
                 if(binding.namePerson.text!!.isEmpty()){
                     Toast.makeText(requireActivity(), "F1", Toast.LENGTH_SHORT).show()
@@ -108,22 +80,38 @@ class person : Fragment() {
                 }else{
                     uploadInfo()
                 }
-
-
-//                else{
-//                    uploadInfo()
-//                }
-
             }
-        //test Upload Profile
-
-
-
     return binding.root
     }
 
+    private fun retrivieInfo() {
+        //Retrive for Info
+        databaseReference = FirebaseDatabase.getInstance().getReference("users")
+        databaseReference.child(firebaseAuth.uid.toString()).addValueEventListener(
+            object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
 
-    //Upload Data profile/ 11:06
+                    val user: UserModel? = snapshot.getValue(UserModel::class.java)
+                    binding.namePerson.setText(user?.name)
+                    binding.emailPerson.setText(user?.email)
+
+                    //For Fix Null Image Crash
+                    Glide.with(requireActivity())
+                        .load(user?.imageUrl)
+                        .fallback(R.drawable.notification_bg_normal_pressed)
+                        .fitCenter()
+                        .into(binding.imageView3)
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            }
+        )
+    }
+
+
+    //Use In upload Image To firebase
     private fun uploadData() {
 
             val reference = storage.reference.child("Profile").child(Date().time.toString())
@@ -138,6 +126,8 @@ class person : Fragment() {
 
     }
 
+
+    //Update For Image Only
     private fun uploadInfo2(imgUrl: String) {
 
 
@@ -155,30 +145,23 @@ class person : Fragment() {
 
     }
 
-    //Complete/16:30
+    //Upload Info của Profile User
     private fun uploadInfo() {
-
+        //Chung CHo Update
+        databaseReference = Firebase.database.reference
 
             val user = UserModel(firebaseAuth.uid.toString(),
                 binding.namePerson.text.toString(),
                 firebaseAuth.currentUser?.email,
 
             )
-//            database.reference.child("users")
-//                .child(firebaseAuth.uid.toString())
-//                .setValue(user)
-//                .addOnSuccessListener {
-//                    Toast.makeText(requireActivity(), "Success", Toast.LENGTH_SHORT).show()
-//
-//                }
-//        Chung CHo Update
-        databaseReference = Firebase.database.reference
+
+
+
         //Tạo dữ liệu Sẽ Update
         val editMap = mapOf(
             "name" to user.name,
             "email" to user.email,
-
-
         )
         val userId = firebaseAuth.uid
         if (userId != null) {
@@ -193,13 +176,12 @@ class person : Fragment() {
         intent.type = "image/*"
         startActivityForResult(intent,100)
     }
-
+    //Need For Pick Image Upload
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
        if (data != null){
            if (requestCode == 100 && resultCode == Activity.RESULT_OK){ //Acitivity is need if this is fragment
                imageUri = data.data!!
-
                binding.imageView3.setImageURI(imageUri)
                uploadData()
            }
