@@ -94,7 +94,6 @@ class person : Fragment() {
                     val user: UserModel? = snapshot.getValue(UserModel::class.java)
                     binding.namePerson.setText(user?.name)
                     binding.emailPerson.setText(user?.email)
-
                     //For Fix Null Image Crash
                     Glide.with(requireActivity())
                         .load(user?.imageUrl)
