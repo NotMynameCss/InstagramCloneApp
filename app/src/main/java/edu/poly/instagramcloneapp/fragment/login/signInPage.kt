@@ -20,9 +20,9 @@ class signInPage : Fragment() {
 
     private lateinit var binding: FragmentSignInPageBinding
 
-    //Firebase Auth
+    //Chung của Firebase
     private lateinit var firebaseAuth: FirebaseAuth
-    //Firebase Database:
+
     private lateinit var dbRef: DatabaseReference
 
 
@@ -35,17 +35,14 @@ class signInPage : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //firebase Object
-        dbRef = FirebaseDatabase.getInstance().getReference("User")
-        //Chung của firebase
 
+        //Chung của SignIn
         binding = FragmentSignInPageBinding.inflate(layoutInflater)
-        //Firebase Auth
-
+        //Chung của FIrebase
+        dbRef = FirebaseDatabase.getInstance().getReference("User")
         firebaseAuth = FirebaseAuth.getInstance()
 
         //Button
-
 
         binding.sumbitLogin.setOnClickListener {
             signin()

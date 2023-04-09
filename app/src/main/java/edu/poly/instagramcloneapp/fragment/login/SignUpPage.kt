@@ -33,8 +33,6 @@ class SignUpPage : Fragment() {
         //Chung của firebase
 
             binding = FragmentSignUpPageBinding.inflate(layoutInflater)
-        //Firebase Auth
-
             firebaseAuth = FirebaseAuth.getInstance()
 
         //Button
@@ -42,7 +40,6 @@ class SignUpPage : Fragment() {
             binding.sumbitSignUp.setOnClickListener {
             signup()
         }
-
 
         //Cần cho onCreateView()
         return binding.root
@@ -66,7 +63,6 @@ class SignUpPage : Fragment() {
                         ?.addOnFailureListener {
                             Toast.makeText(requireActivity(),it.toString(),Toast.LENGTH_SHORT).show()
                         }
-
                     //Đổi Fragment
                     val intent = Intent(requireActivity(), login::class.java)
                     startActivity(intent)
