@@ -53,16 +53,16 @@ class userAdapter(private val context: Context,private var recyclerViewSearch:Ar
                 .fallback(com.google.firebase.database.R.drawable.notification_bg_normal_pressed)
                 .fitCenter()
                 .into(holder.ImageView)
-
-
-
-
-
     }
 
     override fun getItemCount(): Int {
         //Return size of items
         return recyclerViewSearch.size
+    }
+    fun searchDataList(searchList: ArrayList<UserModel>){
+        recyclerViewSearch = searchList
+        notifyDataSetChanged()
+
     }
 
 }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
@@ -23,7 +24,7 @@ import edu.poly.instagramcloneapp.model.UserModel
 
 //Retrivie + recylerview: https://www.youtube.com/watch?v=VVXKVFyYQdQ
 
-
+//Search RecylerVIew: https://www.youtube.com/watch?v=kGWN_Krbcms
 
 //* Retrivie : Bấm để nhận kết quả(search), Fetch Tự hiện kết quả(Profile)
 //* Snapshot có thể kiểm tra và chỉ gọi những gì tồn tại dù trong biến có thứ ko tồn tại
@@ -37,6 +38,7 @@ class search : Fragment() {
     private var firebaseDatabase: FirebaseDatabase?=null
     private var databaseReference: DatabaseReference?= null
     private lateinit var userArrayList: ArrayList<UserModel>
+    private lateinit var adapter2: userAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,11 +58,46 @@ class search : Fragment() {
         //Bắt đầu Gọi lên Recyler:
         binding.recyclerViewSearch.layoutManager = LinearLayoutManager(requireActivity())
 
+
+
         userArrayList = arrayListOf<UserModel>()
+
 
         recylerRetrivie()
 
+        //Button:
+
+        binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String): Boolean {
+
+                    searchList(p0)
+
+                return true
+            }
+
+        })
+
+
         return binding.root
+    }
+    private fun searchList(text:String){
+        //Cần cho Phần search
+        adapter2 = userAdapter(requireActivity(),userArrayList)
+        binding.recyclerViewSearch.adapter = adapter2
+
+        //Bắt đầu search
+        val searchList = ArrayList<UserModel>()
+        for (userdata in userArrayList){
+            if (userdata.name?.lowercase()?.contains(text.lowercase()) == true){
+                searchList.add(userdata)
+            }
+        }
+        adapter2.searchDataList(searchList)
+
     }
 
     private fun recylerRetrivie() {
