@@ -4,13 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import edu.poly.instagramcloneapp.Adapter.MessageAdapter
 import edu.poly.instagramcloneapp.databinding.ActivityChatBinding
-import edu.poly.instagramcloneapp.databinding.ActivityMainBinding
 import edu.poly.instagramcloneapp.model.MessageModel
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.Date
 
 
@@ -18,16 +16,17 @@ import java.util.Date
 //Chat Send Message: https://www.youtube.com/watch?v=mycu5zAoox0&t=1s
 class chatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBinding
-    private var firebaseUser: FirebaseUser? = null
-    private var databaseReference: DatabaseReference? = null
+
     private lateinit var database: FirebaseDatabase
 
+    //Chat
     private lateinit var senderUid: String
     private lateinit var receiverUid: String
 
     private lateinit var senderRoom: String
     private lateinit var receiverRoom: String
-
+    //Message
+    private lateinit var list: ArrayList<MessageModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,15 +35,20 @@ class chatActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         senderUid = FirebaseAuth.getInstance().uid.toString()
-        receiverUid = intent.getStringExtra("userId").toString()
+        receiverUid = intent.getStringExtra("uid").toString()
+
+        list = ArrayList()
+
 
         senderRoom = senderUid+receiverUid
         receiverRoom = receiverUid+senderUid
 
+
+
         database = FirebaseDatabase.getInstance()
 
         val formater = SimpleDateFormat("yyyy.MM.dd G 'at' hh:mm:ss a zzz")
-        val date = Date()
+
 
         binding.sendBtn.setOnClickListener {
             if (binding.messageText.text.isEmpty()){
@@ -68,5 +72,24 @@ class chatActivity : AppCompatActivity() {
                     }
             }
         }
+
+        database.reference.child("chats").child(senderRoom).child("message")
+            .addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    list.clear()
+
+                    for (ds in snapshot.children){
+                        val data = ds.getValue(MessageModel::class.java)
+                        list.add(data!!)
+                    }
+
+                    binding.messageLayout.adapter = MessageAdapter(this@chatActivity,list)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@chatActivity, "F4", Toast.LENGTH_SHORT).show()
+                }
+
+            })
     }
 }

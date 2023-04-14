@@ -24,9 +24,9 @@ class userAdapter(private val context: Context,private var recyclerViewSearch:Ar
 
     class ViewHolder(itemView:View): RecyclerView.ViewHolder(itemView){
         //Use textview View
-        val nameView: TextView = itemView.findViewById(R.id.textView)
+        val nameView: TextView = itemView.findViewById(R.id.receiverTextView)
         val emailView: TextView = itemView.findViewById(R.id.textView2)
-        val ImageView: ImageView = itemView.findViewById(R.id.imageView2)
+        val ImageView: ImageView = itemView.findViewById(R.id.imageReceiverView)
         val layoutUser: ConstraintLayout = itemView.findViewById(R.id.layoutUser)
     }
 
@@ -59,7 +59,7 @@ class userAdapter(private val context: Context,private var recyclerViewSearch:Ar
         //For open chat Acitivity
         holder.layoutUser.setOnClickListener {
             val intent = Intent(context, chatActivity::class.java)
-            intent.putExtra("userId",currentItem.uid)
+            intent.putExtra("uid",currentItem.uid)
             context.startActivity(intent)
         }
     }

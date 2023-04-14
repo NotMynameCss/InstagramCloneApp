@@ -96,8 +96,8 @@ class person : Fragment() {
                     //For Fix Null Image Crash
                     Glide.with(requireActivity())
                         .load(user?.imageUrl)
-                        .fallback(R.drawable.notification_bg_normal_pressed)
                         .fitCenter()
+                        .fallback(R.drawable.notification_bg_normal_pressed)
                         .into(binding.imageView3)
                 }
                 override fun onCancelled(error: DatabaseError) {

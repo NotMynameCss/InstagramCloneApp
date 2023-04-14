@@ -71,11 +71,8 @@ class search : Fragment() {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 return false
             }
-
             override fun onQueryTextChange(p0: String): Boolean {
-
                     searchList(p0)
-
                 return true
             }
 
