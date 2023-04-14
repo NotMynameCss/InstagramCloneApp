@@ -2,17 +2,18 @@ package edu.poly.instagramcloneapp.Adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestBuilder
 import edu.poly.instagramcloneapp.R
-import edu.poly.instagramcloneapp.fragment.main.search
+import edu.poly.instagramcloneapp.chatActivity
 import edu.poly.instagramcloneapp.model.UserModel
 
 
@@ -23,9 +24,10 @@ class userAdapter(private val context: Context,private var recyclerViewSearch:Ar
 
     class ViewHolder(itemView:View): RecyclerView.ViewHolder(itemView){
         //Use textview View
-        val nameView: TextView = itemView.findViewById(R.id.textView)
+        val nameView: TextView = itemView.findViewById(R.id.receiverTextView)
         val emailView: TextView = itemView.findViewById(R.id.textView2)
-        val ImageView: ImageView = itemView.findViewById(R.id.imageView2)
+        val ImageView: ImageView = itemView.findViewById(R.id.imageReceiverView)
+        val layoutUser: ConstraintLayout = itemView.findViewById(R.id.layoutUser)
     }
 
 
@@ -50,9 +52,16 @@ class userAdapter(private val context: Context,private var recyclerViewSearch:Ar
 
             Glide.with(context)
                 .load(currentItem.imageUrl)
-                .fallback(com.google.firebase.database.R.drawable.notification_bg_normal_pressed)
+                .placeholder(R.drawable.app_ic)
                 .fitCenter()
                 .into(holder.ImageView)
+
+        //For open chat Acitivity
+        holder.layoutUser.setOnClickListener {
+            val intent = Intent(context, chatActivity::class.java)
+            intent.putExtra("uid",currentItem.uid)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -62,7 +71,6 @@ class userAdapter(private val context: Context,private var recyclerViewSearch:Ar
     fun searchDataList(searchList: ArrayList<UserModel>){
         recyclerViewSearch = searchList
         notifyDataSetChanged()
-
     }
 
 }
