@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.storage.FirebaseStorage
 import edu.poly.instagramcloneapp.Adapter.userAdapter
 import edu.poly.instagramcloneapp.databinding.FragmentSearchBinding
@@ -39,6 +41,7 @@ class search : Fragment() {
     private var databaseReference: DatabaseReference?= null
     private lateinit var userArrayList: ArrayList<UserModel>
     private lateinit var adapter2: userAdapter
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +58,7 @@ class search : Fragment() {
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase?.getReference("data")!! //For snapshot, Names Is parent
 
+        firebaseAuth = FirebaseAuth.getInstance()
         //Bắt đầu Gọi lên Recyler:
         binding.recyclerViewSearch.layoutManager = LinearLayoutManager(requireActivity())
 
@@ -105,11 +109,14 @@ class search : Fragment() {
                 override fun onDataChange(snapshot: DataSnapshot) {
 
                     if (snapshot.exists()){
-
+                        userArrayList.clear()
                         for(ds in snapshot.children){
 
-                            val userData = ds.getValue(UserModel::class.java)
-                            userArrayList.add(userData!!)
+
+                                val userData = ds.getValue(UserModel::class.java)
+                                if (userData?.uid != firebaseAuth.currentUser?.uid)
+                                    userArrayList.add(userData!!)
+
 
                         }
                         binding.recyclerViewSearch.adapter = userAdapter(requireActivity(),userArrayList)

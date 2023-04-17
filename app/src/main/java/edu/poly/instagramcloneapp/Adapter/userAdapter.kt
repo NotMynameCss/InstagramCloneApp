@@ -60,6 +60,7 @@ class userAdapter(private val context: Context,private var recyclerViewSearch:Ar
         holder.layoutUser.setOnClickListener {
             val intent = Intent(context, chatActivity::class.java)
             intent.putExtra("uid",currentItem.uid)
+            intent.putExtra("name",currentItem.name)
             context.startActivity(intent)
         }
     }
