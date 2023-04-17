@@ -39,16 +39,20 @@ class chatActivity : AppCompatActivity() {
 
         list = ArrayList()
 
-
         senderRoom = senderUid+receiverUid
         receiverRoom = receiverUid+senderUid
-
-
 
         database = FirebaseDatabase.getInstance()
 
         val formater = SimpleDateFormat("yyyy.MM.dd G 'at' hh:mm:ss a zzz")
 
+
+
+        binding.name.setText(intent.getStringExtra("name").toString())
+
+        binding.backBtn.setOnClickListener {
+            finish()
+        }
 
         binding.sendBtn.setOnClickListener {
             if (binding.messageText.text.isEmpty()){
@@ -72,7 +76,11 @@ class chatActivity : AppCompatActivity() {
                     }
             }
         }
+        readMessage()
 
+    }
+
+    private fun readMessage() {
         database.reference.child("chats").child(senderRoom).child("message")
             .addValueEventListener(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
