@@ -18,6 +18,8 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import edu.poly.instagramcloneapp.MainActivity
+import edu.poly.instagramcloneapp.changeImage
 
 import edu.poly.instagramcloneapp.databinding.FragmentPersonBinding
 import edu.poly.instagramcloneapp.model.UserModel
@@ -69,7 +71,9 @@ class person : Fragment() {
 
         //Select Image
             binding.imageView3.setOnClickListener{
-                pickImage()
+//                pickImage()
+                val intent = Intent(requireActivity(), changeImage::class.java)
+                startActivity(intent)
             }
         //Upload Profile Info
             binding.sumbitProfile.setOnClickListener {
@@ -109,49 +113,17 @@ class person : Fragment() {
     }
 
 
-    //Use In upload Image To firebase
-    private fun uploadData() {
 
-            val reference = storage.reference.child("Profile").child(Date().time.toString())
-            reference.putFile(imageUri).addOnCompleteListener {
-                if (it.isSuccessful){
-                    reference.downloadUrl.addOnSuccessListener { task ->
-                        uploadInfo2(task.toString())
-                    }
-                }
-            }
-
-
-    }
-
-
-    //Update For Image Only
-    private fun uploadInfo2(imgUrl: String) {
-
-
-
-        //Chung cho Update
-        databaseReference = Firebase.database.reference
-        //Tạo Dữ liệu sẽ Update
-        val editMap = mapOf(
-            "imageUrl" to imgUrl
-        )
-        val userId = firebaseAuth.uid
-        if (userId != null) {
-            databaseReference.child("users").child(userId).updateChildren(editMap)
-        }
-
-    }
 
     //Upload Info của Profile User
     private fun uploadInfo() {
         //Chung CHo Update
-        databaseReference = Firebase.database.reference
+        databaseReference = Firebase.database.getReference("users")
 
-            val user = UserModel(firebaseAuth.uid.toString(),
-                binding.namePerson.text.toString(),
-                firebaseAuth.currentUser?.email,
 
+            val user = UserModel(
+                name = binding.namePerson.text.toString(),
+                email = firebaseAuth.currentUser?.email,
             )
 
 
@@ -163,29 +135,13 @@ class person : Fragment() {
         )
         val userId = firebaseAuth.uid
         if (userId != null) {
-            databaseReference.child("users").child(userId).updateChildren(editMap)
+            databaseReference.child(userId).updateChildren(editMap)
         }
 
     }
 
-    private fun pickImage() {
-        val intent = Intent()
-        intent.action = Intent.ACTION_GET_CONTENT
-        intent.type = "image/*"
-        startActivityForResult(intent,100)
-    }
-    //Need For Pick Image Upload
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-       if (data != null){
-           if (requestCode == 100 && resultCode == Activity.RESULT_OK){ //Acitivity is need if this is fragment
-               imageUri = data.data!!
-               binding.imageView3.setImageURI(imageUri)
-               uploadData()
-           }
-       }
 
-    }
+
 
 
 

@@ -16,6 +16,20 @@
         android:theme="@style/Theme.InstagramCloneApp"
         tools:targetApi="31">
         <activity
+            android:name=".changeImage"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ProfileStart"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".chatActivity"
             android:exported="false">
             <meta-data
