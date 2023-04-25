@@ -55,6 +55,32 @@ class changeImage : AppCompatActivity() {
         setContentView(binding.root)
     }
 
+
+
+    private fun retrivieInfo() {
+        //Retrive for Info
+        databaseReference = FirebaseDatabase.getInstance().getReference("users")
+        databaseReference.child(firebaseAuth.uid.toString()).addValueEventListener(
+            object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                    val user: UserModel? = snapshot.getValue(UserModel::class.java)
+
+                    //For Fix Null Image Crash
+                    Glide.with(applicationContext)
+                        .load(user?.imageUrl)
+                        .fitCenter()
+                        .fallback(R.drawable.notification_bg_normal_pressed)
+                        .into(binding.imageView)
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@changeImage, "Upload Failed", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+        )
+    }
+
     private fun pickImage() {
         val intent = Intent()
         intent.action = Intent.ACTION_GET_CONTENT
@@ -93,29 +119,7 @@ class changeImage : AppCompatActivity() {
         }
 
     }
-    private fun retrivieInfo() {
-        //Retrive for Info
-        databaseReference = FirebaseDatabase.getInstance().getReference("users")
-        databaseReference.child(firebaseAuth.uid.toString()).addValueEventListener(
-            object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
 
-                    val user: UserModel? = snapshot.getValue(UserModel::class.java)
-
-                    //For Fix Null Image Crash
-                    Glide.with(applicationContext)
-                        .load(user?.imageUrl)
-                        .fitCenter()
-                        .fallback(R.drawable.notification_bg_normal_pressed)
-                        .into(binding.imageView)
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@changeImage, "Upload Failed", Toast.LENGTH_SHORT).show()
-                }
-
-            }
-        )
-    }
 
     //Need For Pick Image Upload
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
