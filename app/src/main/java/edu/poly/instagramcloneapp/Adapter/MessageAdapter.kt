@@ -27,6 +27,7 @@ class MessageAdapter(private val context: Context, private var list:ArrayList<Me
     var ITEM_RECEIVER = 2
 
 
+
     //9:47
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if(viewType == ITEM_SENT)
