@@ -1,7 +1,6 @@
 package edu.poly.instagramcloneapp.fragment.main
 
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -18,12 +17,10 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import edu.poly.instagramcloneapp.MainActivity
-import edu.poly.instagramcloneapp.changeImage
+import edu.poly.instagramcloneapp.activity.person.changeImage
 
 import edu.poly.instagramcloneapp.databinding.FragmentPersonBinding
 import edu.poly.instagramcloneapp.model.UserModel
-import java.util.*
 
 
 //Get Username,emai from currentUser: https://stackoverflow.com/questions/59117267/getting-currently-logged-in-users-id-in-firebase-auth-in-kotlin
@@ -72,14 +69,16 @@ class person : Fragment() {
         //Select Image
             binding.imageView3.setOnClickListener{
 //                pickImage()
+
                 val intent = Intent(requireActivity(), changeImage::class.java)
+                //fix cho fragment not attachted
+                intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 startActivity(intent)
             }
         //Upload Profile Info
             binding.sumbitProfile.setOnClickListener {
                 if(binding.namePerson.text!!.isEmpty()){
                     Toast.makeText(requireActivity(), "F1", Toast.LENGTH_SHORT).show()
-
                 }else{
                     uploadInfo()
                 }
@@ -112,22 +111,15 @@ class person : Fragment() {
         )
     }
 
-
-
-
     //Upload Info của Profile User
     private fun uploadInfo() {
         //Chung CHo Update
         databaseReference = Firebase.database.getReference("users")
 
-
             val user = UserModel(
                 name = binding.namePerson.text.toString(),
                 email = firebaseAuth.currentUser?.email,
             )
-
-
-
         //Tạo dữ liệu Sẽ Update
         val editMap = mapOf(
             "name" to user.name,
@@ -139,10 +131,5 @@ class person : Fragment() {
         }
 
     }
-
-
-
-
-
 
 }

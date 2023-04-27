@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import edu.poly.instagramcloneapp.databinding.FragmentSignUpPageBinding
-import edu.poly.instagramcloneapp.login
+import edu.poly.instagramcloneapp.activity.login.login
 //Email Verification: https://www.youtube.com/watch?v=8wQ8QacTIVA&t=389s
 
 class SignUpPage : Fragment() {
@@ -65,6 +65,8 @@ class SignUpPage : Fragment() {
                         }
                     //Đổi Fragment
                     val intent = Intent(requireActivity(), login::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+
                     startActivity(intent)
                 }
                 else{

@@ -2,26 +2,16 @@ package edu.poly.instagramcloneapp.fragment.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.snapshots
-import com.google.firebase.ktx.Firebase
-import edu.poly.instagramcloneapp.MainActivity
-import edu.poly.instagramcloneapp.ProfileStart
-import edu.poly.instagramcloneapp.R
-import edu.poly.instagramcloneapp.databinding.FragmentHomeBinding
+import edu.poly.instagramcloneapp.activity.MainActivity
+import edu.poly.instagramcloneapp.activity.login.ProfileStart
 import edu.poly.instagramcloneapp.databinding.FragmentSignInPageBinding
-import edu.poly.instagramcloneapp.model.UserModel
-
 
 class signInPage : Fragment() {
 
@@ -82,9 +72,11 @@ class signInPage : Fragment() {
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 if (snapshot.exists()){
                                     val intent = Intent(requireActivity(), MainActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                                     startActivity(intent)
                                 }else{
                                     val intent = Intent(requireActivity(), ProfileStart::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                                     startActivity(intent)
                                 }
                             }

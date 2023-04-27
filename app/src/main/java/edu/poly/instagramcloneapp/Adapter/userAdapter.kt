@@ -13,8 +13,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import edu.poly.instagramcloneapp.R
-import edu.poly.instagramcloneapp.chatActivity
+import edu.poly.instagramcloneapp.activity.chatActivity
 import edu.poly.instagramcloneapp.model.UserModel
+import edu.poly.instagramcloneapp.model.postModel
 
 
 //RecyclerView With Image: https://www.youtube.com/watch?v=0ok8e0JfIoo

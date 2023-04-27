@@ -6,13 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.getValue
-import com.google.firebase.storage.FirebaseStorage
 import edu.poly.instagramcloneapp.Adapter.userAdapter
 import edu.poly.instagramcloneapp.databinding.FragmentSearchBinding
 import edu.poly.instagramcloneapp.model.UserModel
@@ -62,15 +59,11 @@ class search : Fragment() {
         //Bắt đầu Gọi lên Recyler:
         binding.recyclerViewSearch.layoutManager = LinearLayoutManager(requireActivity())
 
-
-
         userArrayList = arrayListOf<UserModel>()
-
 
         recylerRetrivie()
 
         //Button:
-
         binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 return false
@@ -81,7 +74,6 @@ class search : Fragment() {
             }
 
         })
-
 
         return binding.root
     }
@@ -116,8 +108,6 @@ class search : Fragment() {
                                 val userData = ds.getValue(UserModel::class.java)
                                 if (userData?.uid != firebaseAuth.currentUser?.uid)
                                     userArrayList.add(userData!!)
-
-
                         }
                         binding.recyclerViewSearch.adapter = userAdapter(requireActivity(),userArrayList)
                     }

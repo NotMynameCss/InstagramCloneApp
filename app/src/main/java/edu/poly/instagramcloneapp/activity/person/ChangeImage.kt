@@ -1,4 +1,4 @@
-package edu.poly.instagramcloneapp
+package edu.poly.instagramcloneapp.activity.person
 
 import android.app.Activity
 import android.content.Intent
@@ -14,8 +14,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import edu.poly.instagramcloneapp.databinding.ActivityChangeImageBinding
-import edu.poly.instagramcloneapp.databinding.ActivityChatBinding
-import edu.poly.instagramcloneapp.databinding.FragmentPersonBinding
+import edu.poly.instagramcloneapp.fragment.main.person
 import edu.poly.instagramcloneapp.model.UserModel
 import java.util.*
 
@@ -24,17 +23,13 @@ import java.util.*
 class changeImage : AppCompatActivity() {
     private lateinit var binding:ActivityChangeImageBinding
 
-
-
     //Chung Của Firebase
-
     private lateinit var storage: FirebaseStorage
     private lateinit var databaseReference: DatabaseReference
     //For SelectImage
     private lateinit var imageUri: Uri
     //Firebase Auth: ACcount
     private lateinit var firebaseAuth: FirebaseAuth
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +50,6 @@ class changeImage : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-
-
     private fun retrivieInfo() {
         //Retrive for Info
         databaseReference = FirebaseDatabase.getInstance().getReference("users")
@@ -69,14 +62,13 @@ class changeImage : AppCompatActivity() {
                     //For Fix Null Image Crash
                     Glide.with(applicationContext)
                         .load(user?.imageUrl)
-                        .fitCenter()
                         .fallback(R.drawable.notification_bg_normal_pressed)
+                        .fitCenter()
                         .into(binding.imageView)
                 }
                 override fun onCancelled(error: DatabaseError) {
                     Toast.makeText(this@changeImage, "Upload Failed", Toast.LENGTH_SHORT).show()
                 }
-
             }
         )
     }
@@ -103,7 +95,6 @@ class changeImage : AppCompatActivity() {
 
     }
 
-
     //Update For Image Only
     private fun uploadInfo2(imgUrl: String) {
 
@@ -119,7 +110,6 @@ class changeImage : AppCompatActivity() {
         }
 
     }
-
 
     //Need For Pick Image Upload
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
