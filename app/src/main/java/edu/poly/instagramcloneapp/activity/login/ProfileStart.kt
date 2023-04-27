@@ -1,4 +1,4 @@
-package edu.poly.instagramcloneapp
+package edu.poly.instagramcloneapp.activity.login
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,7 +7,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import edu.poly.instagramcloneapp.databinding.ActivityMainBinding
 import edu.poly.instagramcloneapp.databinding.ActivityProfileStartBinding
 import edu.poly.instagramcloneapp.model.UserModel
 
@@ -19,9 +18,7 @@ class ProfileStart : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         firebaseAuth = FirebaseAuth.getInstance()
-
 
         binding = ActivityProfileStartBinding.inflate(layoutInflater)
         uploadInfo()

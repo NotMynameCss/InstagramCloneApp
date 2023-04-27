@@ -5,21 +5,22 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+
 import edu.poly.instagramcloneapp.R
 import edu.poly.instagramcloneapp.databinding.ReceiverItemLayoutBinding
 import edu.poly.instagramcloneapp.databinding.SentItemLayoutBinding
 import edu.poly.instagramcloneapp.model.MessageModel
-import edu.poly.instagramcloneapp.model.UserModel
+import org.json.JSONObject
 
 //Read Message : https://www.youtube.com/watch?v=ch0TdgXICjQ&t=68s
 
 //RecyclerView With Image: https://www.youtube.com/watch?v=0ok8e0JfIoo
 class MessageAdapter(private val context: Context, private var list:ArrayList<MessageModel>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private lateinit var senderRoom: String
 
 
     //Pbiet Người dùng
@@ -37,13 +38,29 @@ class MessageAdapter(private val context: Context, private var list:ArrayList<Me
         )
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val message = list[position]
 
-
+        senderRoom = message.senderId + message.receiverId
         if (holder.itemViewType == ITEM_SENT){
             val viewHolder = holder as SentViewHolder
-            viewHolder.binding.SendTextView.text = message.message
+
+            if (message.message.isNullOrBlank()){
+                viewHolder.binding.linear2.visibility = View.VISIBLE
+                viewHolder.binding.linear1.visibility = View.GONE
+
+                            // do something with map
+                            Glide.with(context)
+                                .load(message.Image)
+                                .placeholder(R.drawable.app_ic)
+                                .fitCenter()
+                                .into(viewHolder.binding.imageView9)
+
+            }else{
+                viewHolder.binding.SendTextView.text = message.message
+            }
+
         }else{
             val viewHolder = holder as ReceiverViewHolder
             viewHolder.binding.receiverTextView.text = message.message

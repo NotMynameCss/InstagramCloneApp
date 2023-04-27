@@ -1,10 +1,11 @@
-package edu.poly.instagramcloneapp
+package edu.poly.instagramcloneapp.activity
 
 
 
 //Multi Image:
 //+https://stackoverflow.com/questions/46272309/upload-multiple-images-to-firebase-storage
 //+https://sl.bing.net/kgkyaLuz7vM
+//Chat Send Message: https://www.youtube.com/watch?v=mycu5zAoox0&t=1s
 
 import android.Manifest
 import android.net.Uri
@@ -24,9 +25,9 @@ import gun0912.tedbottompicker.TedBottomPicker
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
-//Chat Send Message: https://www.youtube.com/watch?v=mycu5zAoox0&t=1s
 class chatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBinding
 
@@ -44,10 +45,11 @@ class chatActivity : AppCompatActivity() {
 
     //For PickMultiple Image
     private lateinit var storage: FirebaseStorage
-    private lateinit var databaseReference: DatabaseReference
+
     private lateinit var StorageReference: StorageReference
     private var selectedUriList: ArrayList<Uri> = ArrayList()
     private var urlString: ArrayList<Uri> = ArrayList()
+    private var formater = SimpleDateFormat("yyyy.MM.dd G 'at' hh:mm:ss a zzz")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,8 +69,6 @@ class chatActivity : AppCompatActivity() {
         database = FirebaseDatabase.getInstance()
         storage = FirebaseStorage.getInstance()
 
-
-
         binding.name.setText(intent.getStringExtra("name").toString())
 
         binding.backBtn.setOnClickListener {
@@ -80,28 +80,24 @@ class chatActivity : AppCompatActivity() {
 
         binding.camera.setOnClickListener {
             requestPermission()
-            /////
-
-
-            //////
             }
 
         binding.sendBtn.setOnClickListener {
             sendMessage()
         }
-
         readMessage()
     }
 //For Chat message
     private fun sendMessage(){
-        val formater = SimpleDateFormat("yyyy.MM.dd G 'at' hh:mm:ss a zzz")
         if (binding.messageText.text.isEmpty()) {
             Toast.makeText(this, "can't send empty", Toast.LENGTH_SHORT).show()
         } else {
+            //Generate Information for sender
             val message = MessageModel(
-                binding.messageText.text.toString(),
-                senderUid,
-                formater.format(Date())
+                message = binding.messageText.text.toString(),
+                senderId = senderUid,
+                receiverId = receiverUid,
+                timestamp = formater.format(Date())
             )
             val randomKey = database.reference.push().key
 
@@ -120,25 +116,22 @@ class chatActivity : AppCompatActivity() {
                 }
         }
     }
-
     private fun readMessage() {
         database.reference.child("chats").child(senderRoom).child("message")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     list.clear()
-
                     for (ds in snapshot.children) {
                         val data = ds.getValue(MessageModel::class.java)
-                        list.add(data!!)
+                        if (data != null) {
+                                list.add(data)
+                        }
                     }
-
                     binding.messageLayout.adapter = MessageAdapter(this@chatActivity, list)
                 }
-
                 override fun onCancelled(error: DatabaseError) {
                     Toast.makeText(this@chatActivity, "F4", Toast.LENGTH_SHORT).show()
                 }
-
             })
     }
 
@@ -149,7 +142,6 @@ class chatActivity : AppCompatActivity() {
             override fun onPermissionGranted() {
                 openBottomPicker()
             }
-
             override fun onPermissionDenied(deniedPermissions: List<String>) {
                 Toast.makeText(
                     this@chatActivity,
@@ -166,12 +158,12 @@ class chatActivity : AppCompatActivity() {
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             )
-            .check();
+            .check()
     }
 
     //For Pick Image
     private fun openBottomPicker() {
-
+        this.selectedUriList.clear()
         TedBottomPicker.with(this@chatActivity)
             .setPeekHeight(1600)
             .showTitle(false)
@@ -183,21 +175,15 @@ class chatActivity : AppCompatActivity() {
                 selectedUriList = uriList as ArrayList<Uri>
                 doneUpload2(selectedUriList)
             }
-
-
     }
 
     private fun doneUpload2(selectedUriList: ArrayList<Uri>) {
         val uri = selectedUriList
-
-
         StorageReference = storage.getReference("photos")
         for (i in this.selectedUriList.indices) {
             uri[i] = Uri.parse("file://" + this.selectedUriList[i].path)
-            val ref: StorageReference = StorageReference.child(uri[i]?.getLastPathSegment().toString())
+            val ref: StorageReference = StorageReference.child(uri[i].getLastPathSegment().toString())
             ref.putFile(uri[i]).addOnSuccessListener(this){
-
-
                 ref.downloadUrl.addOnCompleteListener {
                     task->
                     if (task.isSuccessful) {
@@ -209,32 +195,39 @@ class chatActivity : AppCompatActivity() {
                         }
                     }
                     else {
-                        // Handle failures
-                        // ...
-                            Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
                     }
                 }
                 }
             }
-
-            }
+    }
     private fun storeLink(urlString: ArrayList<Uri>) {
+        //Generate Information for sender
+        val randomKey = database.reference.push().key
         if (urlString.size > 0) {
             val hashMap = HashMap<String, String>()
             for (i in urlString.indices) {
-                hashMap["ImgLink$i"] = urlString[i].toString()
+                hashMap[i.toString()] = urlString[i].toString()
             }
-            val databaseReference =
-                FirebaseDatabase.getInstance().reference.child("User")
-            databaseReference.push().setValue(hashMap)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(
-                            this,
-                            "Successfully Uplosded",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+            val message = MessageModel(
+                Image = hashMap.toString(),
+                senderId = senderUid,
+                receiverId = receiverUid,
+                timestamp = formater.format(Date())
+            )
+            database.reference.child("chats")
+                .child(senderRoom).child("message")
+                .child(randomKey.toString())
+                .setValue(message)
+                .addOnSuccessListener { task ->
+                    database.reference.child("chats")
+                        .child(receiverRoom)
+                        .child("message")
+                        .child(randomKey.toString()).setValue(message)
+                        .addOnSuccessListener {
+                            binding.messageText.text = null
+                            Toast.makeText(this, "Sent", Toast.LENGTH_SHORT).show()
+                        }
                 }.addOnFailureListener { e ->
                     Toast.makeText(
                         this,
@@ -242,9 +235,9 @@ class chatActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            this.selectedUriList.clear()
         }
+        //clear urlString to allow user send another Image
+        this.urlString.clear()
     }
-
 }
 

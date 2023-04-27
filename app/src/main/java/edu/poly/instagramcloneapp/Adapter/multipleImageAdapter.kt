@@ -1,7 +1,6 @@
 package edu.poly.instagramcloneapp.Adapter
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
@@ -10,15 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.graphics.createBitmap
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import edu.poly.instagramcloneapp.R
-import edu.poly.instagramcloneapp.chatActivity
 
-import edu.poly.instagramcloneapp.model.UserModel
+import androidx.recyclerview.widget.RecyclerView
+import edu.poly.instagramcloneapp.R
+
 import java.io.IOException
 
 class multipleImageAdapter(private val context: Context, private var mutipleImageList:ArrayList<Uri>): RecyclerView.Adapter<userAdapter.ViewHolder>() {
