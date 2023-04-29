@@ -14,7 +14,6 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import edu.poly.instagramcloneapp.databinding.ActivityChangeImageBinding
-import edu.poly.instagramcloneapp.fragment.main.person
 import edu.poly.instagramcloneapp.model.UserModel
 import java.util.*
 
@@ -46,19 +45,15 @@ class changeImage : AppCompatActivity() {
         binding.button2.setOnClickListener{
             finish()
         }
-
         setContentView(binding.root)
     }
-
     private fun retrivieInfo() {
         //Retrive for Info
         databaseReference = FirebaseDatabase.getInstance().getReference("users")
         databaseReference.child(firebaseAuth.uid.toString()).addValueEventListener(
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-
                     val user: UserModel? = snapshot.getValue(UserModel::class.java)
-
                     //For Fix Null Image Crash
                     Glide.with(applicationContext)
                         .load(user?.imageUrl)
@@ -83,7 +78,8 @@ class changeImage : AppCompatActivity() {
     //Use In upload Image To firebase
     private fun uploadData() {
 
-        val reference = storage.reference.child("Profile").child(Date().time.toString())
+        val uriName = Uri.parse("file://" + this.imageUri.path)
+        val reference = storage.reference.child("Profile").child(uriName.lastPathSegment.toString())
         reference.putFile(imageUri).addOnCompleteListener {
             if (it.isSuccessful){
                 reference.downloadUrl.addOnSuccessListener { task ->
@@ -91,8 +87,6 @@ class changeImage : AppCompatActivity() {
                 }
             }
         }
-
-
     }
 
     //Update For Image Only
@@ -108,10 +102,10 @@ class changeImage : AppCompatActivity() {
         if (userId != null) {
             databaseReference.child("users").child(userId).updateChildren(editMap)
         }
-
     }
 
     //Need For Pick Image Upload
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (data != null){

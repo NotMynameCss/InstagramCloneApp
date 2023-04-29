@@ -51,11 +51,7 @@ class multipleImageAdapter(private val context: Context, private var mutipleImag
 
     override fun getItemCount(): Int {
         //Return size of items
-        if (mutipleImageList == null){
-            return 0
-        }else{
-            return mutipleImageList.size
-        }
+        return mutipleImageList.size
     }
 
 

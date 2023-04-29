@@ -12,9 +12,8 @@ import java.util.*
 
 class addPostActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddPostBinding
-    private lateinit var database: FirebaseDatabase
-    private var formater = SimpleDateFormat("yyyy.MM.dd G 'at' hh:mm:ss a zzz")
-    private lateinit var firebaseAuth: FirebaseAuth
+    private var formater = SimpleDateFormat("yyyy.MM.dd 'at' hh:mm")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddPostBinding.inflate(layoutInflater)

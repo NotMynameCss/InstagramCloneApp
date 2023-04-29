@@ -8,14 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import edu.poly.instagramcloneapp.R
 import edu.poly.instagramcloneapp.activity.chatActivity
+import edu.poly.instagramcloneapp.activity.person.otherProfile
 import edu.poly.instagramcloneapp.model.UserModel
-import edu.poly.instagramcloneapp.model.postModel
 
 
 //RecyclerView With Image: https://www.youtube.com/watch?v=0ok8e0JfIoo
@@ -28,7 +29,7 @@ class userAdapter(private val context: Context,private var recyclerViewSearch:Ar
         val nameView: TextView = itemView.findViewById(R.id.receiverTextView)
         val emailView: TextView = itemView.findViewById(R.id.textView2)
         val ImageView: ImageView = itemView.findViewById(R.id.imageReceiverView)
-        val layoutUser: ConstraintLayout = itemView.findViewById(R.id.layoutUser)
+        val layoutUser: RelativeLayout = itemView.findViewById(R.id.layoutUser)
     }
 
 
@@ -59,9 +60,11 @@ class userAdapter(private val context: Context,private var recyclerViewSearch:Ar
 
         //For open chat Acitivity
         holder.layoutUser.setOnClickListener {
-            val intent = Intent(context, chatActivity::class.java)
+            val intent = Intent(context, otherProfile::class.java)
             intent.putExtra("uid",currentItem.uid)
             intent.putExtra("name",currentItem.name)
+            intent.putExtra("email",currentItem.email)
+            intent.putExtra("bio",currentItem.bio)
             context.startActivity(intent)
         }
     }

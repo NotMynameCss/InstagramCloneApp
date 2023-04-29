@@ -8,6 +8,7 @@ package edu.poly.instagramcloneapp.activity
 //Chat Send Message: https://www.youtube.com/watch?v=mycu5zAoox0&t=1s
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
@@ -49,7 +50,8 @@ class chatActivity : AppCompatActivity() {
     private lateinit var StorageReference: StorageReference
     private var selectedUriList: ArrayList<Uri> = ArrayList()
     private var urlString: ArrayList<Uri> = ArrayList()
-    private var formater = SimpleDateFormat("yyyy.MM.dd G 'at' hh:mm:ss a zzz")
+    @SuppressLint("SimpleDateFormat")
+    private var formater = SimpleDateFormat("yyyy.MM.dd 'at' hh:mm")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,30 +60,27 @@ class chatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        list = ArrayList()
+        //Firebase
+        database = FirebaseDatabase.getInstance()
+        storage = FirebaseStorage.getInstance()
+
+        //Room chat
         senderUid = FirebaseAuth.getInstance().uid.toString()
         receiverUid = intent.getStringExtra("uid").toString()
-
-        list = ArrayList()
 
         senderRoom = senderUid + receiverUid
         receiverRoom = receiverUid + senderUid
 
-        database = FirebaseDatabase.getInstance()
-        storage = FirebaseStorage.getInstance()
-
-        binding.name.setText(intent.getStringExtra("name").toString())
+        //Binding
+        binding.name.text = intent.getStringExtra("email").toString()
 
         binding.backBtn.setOnClickListener {
             finish()
         }
-        binding.attachment.setOnClickListener {
-
-        }
-
         binding.camera.setOnClickListener {
             requestPermission()
             }
-
         binding.sendBtn.setOnClickListener {
             sendMessage()
         }
@@ -181,21 +180,27 @@ class chatActivity : AppCompatActivity() {
         val uri = selectedUriList
         StorageReference = storage.getReference("photos")
         for (i in this.selectedUriList.indices) {
+
+            //Tạo tên ảnh cho FIREBASE_STORAGE
             uri[i] = Uri.parse("file://" + this.selectedUriList[i].path)
-            val ref: StorageReference = StorageReference.child(uri[i].getLastPathSegment().toString())
+            val ref: StorageReference = StorageReference.child(uri[i].lastPathSegment.toString())
+
+            //Gửi ảnh lên FIREBASE_STORAGE
             ref.putFile(uri[i]).addOnSuccessListener(this){
+                //tạo Link Kết nối ảnh trên FIREBASE_STORAGE
                 ref.downloadUrl.addOnCompleteListener {
                     task->
                     if (task.isSuccessful) {
                         //result : format link imageUpload
                         val content = task.result
                         urlString.add(content)
+
                         if (urlString.size == selectedUriList.size){
                             storeLink(urlString)
                         }
                     }
                     else {
-                        Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Failed Generated Link Image", Toast.LENGTH_SHORT).show()
                     }
                 }
                 }
@@ -215,11 +220,12 @@ class chatActivity : AppCompatActivity() {
                 receiverId = receiverUid,
                 timestamp = formater.format(Date())
             )
+            //Gửi data ảnh cho Sender and Receiver
             database.reference.child("chats")
                 .child(senderRoom).child("message")
                 .child(randomKey.toString())
                 .setValue(message)
-                .addOnSuccessListener { task ->
+                .addOnSuccessListener {
                     database.reference.child("chats")
                         .child(receiverRoom)
                         .child("message")
