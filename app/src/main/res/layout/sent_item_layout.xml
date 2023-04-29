@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="end"
     android:gravity="end"
+
     android:orientation="vertical">
 
     <LinearLayout
@@ -25,16 +26,16 @@
             android:text="@string/app_name"
             android:textAlignment="textStart"
             android:textColor="@color/black"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textStyle="bold|normal" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linear2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:id="@+id/linear2"
         android:visibility="gone">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,9 +52,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:srcCompat="@tools:sample/avatars"
+                />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/timeStamp"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:text="timeStamp"
+        android:visibility="gone"/>
 
 
 </LinearLayout>

@@ -26,10 +26,8 @@ class MainActivity : AppCompatActivity() {
         //Bottom Navigation
         replaceFragment(home())
 
-
         //viewBinding
-        binding = ActivityMainBinding.inflate(layoutInflater);
-
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
         //binding call function Navigation
         binding.navView.setOnItemSelectedListener { //Kick hoat khi an an vao menu item

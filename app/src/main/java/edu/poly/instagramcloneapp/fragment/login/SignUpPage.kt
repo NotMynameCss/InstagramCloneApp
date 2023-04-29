@@ -20,15 +20,10 @@ class SignUpPage : Fragment() {
     private lateinit var firebaseAuth: FirebaseAuth
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         //Chung của firebase
 

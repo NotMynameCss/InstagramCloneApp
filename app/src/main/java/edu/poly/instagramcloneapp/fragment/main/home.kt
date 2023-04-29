@@ -9,14 +9,12 @@ package edu.poly.instagramcloneapp.fragment.main
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 import edu.poly.instagramcloneapp.Adapter.postAdapter
@@ -36,15 +34,11 @@ class home : Fragment() {
 
     //Adapter:
         private lateinit var postArrayList: ArrayList<postModel>
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         //Chung của Home
             binding = FragmentHomeBinding.inflate(layoutInflater)
@@ -67,7 +61,7 @@ class home : Fragment() {
     private fun recylerRetrivie() {
         databaseReference = FirebaseDatabase.getInstance().getReference("posts")
 
-        databaseReference?.orderByChild("timestamp").addValueEventListener(
+        databaseReference.orderByChild("timestamp").addValueEventListener(
             object : ValueEventListener {
                 @SuppressLint("SuspiciousIndentation")
                 override fun onDataChange(snapshot: DataSnapshot) {

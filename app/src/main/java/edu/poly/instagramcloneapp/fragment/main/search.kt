@@ -40,14 +40,10 @@ class search : Fragment() {
     private lateinit var adapter2: userAdapter
     private lateinit var firebaseAuth: FirebaseAuth
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentSearchBinding.inflate(layoutInflater)
 
@@ -72,7 +68,6 @@ class search : Fragment() {
                     searchList(p0)
                 return true
             }
-
         })
 
         return binding.root
@@ -103,8 +98,6 @@ class search : Fragment() {
                     if (snapshot.exists()){
                         userArrayList.clear()
                         for(ds in snapshot.children){
-
-
                                 val userData = ds.getValue(UserModel::class.java)
                                 if (userData?.uid != firebaseAuth.currentUser?.uid)
                                     userArrayList.add(userData!!)

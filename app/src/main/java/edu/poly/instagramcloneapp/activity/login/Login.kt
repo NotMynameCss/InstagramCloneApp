@@ -20,13 +20,12 @@ class login : AppCompatActivity() {
 
         replaceFragment(signInPage())
 
-        binding = ActivitySignInBinding.inflate(layoutInflater);
+        binding = ActivitySignInBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
 
         binding.signIn.setOnClickListener {
             replaceFragment(signInPage())
-
         }
         binding.signUp.setOnClickListener {
             replaceFragment(SignUpPage())
@@ -39,7 +38,9 @@ class login : AppCompatActivity() {
         //Use supportFragmentManager to transaction
         val  fragmentManager = supportFragmentManager                        //Who
         val  fragmentTransaction = fragmentManager.beginTransaction()        //Who
-        fragmentTransaction.replace(R.id.frame_login,fragment)                     //Who
+        fragmentTransaction.replace(R.id.frame_login,fragment)
+        fragmentTransaction.addToBackStack(null)
+
         //finish
         fragmentTransaction.commit()
     }

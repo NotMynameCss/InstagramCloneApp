@@ -1,34 +1,31 @@
 package edu.poly.instagramcloneapp.fragment.main
 
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import edu.poly.instagramcloneapp.Adapter.postAdapter
+import edu.poly.instagramcloneapp.activity.person.accountSettingsActivity
 import edu.poly.instagramcloneapp.activity.person.changeImage
 
 import edu.poly.instagramcloneapp.databinding.FragmentPersonBinding
 import edu.poly.instagramcloneapp.model.UserModel
+import edu.poly.instagramcloneapp.model.postModel
 
 
 //Get Username,emai from currentUser: https://stackoverflow.com/questions/59117267/getting-currently-logged-in-users-id-in-firebase-auth-in-kotlin
-//(Use Create) Upload Profile: https://www.youtube.com/watch?v=UDgMEmqEybc&list=PPSV
 
-
-
-//(Use update) Update Data Firebase: https://www.youtube.com/watch?v=srQ0Nq3mJ_M
 //Read Data: https://www.youtube.com/watch?v=_DtbxQ9EEhc&t=812s
 
 //* Update can alter Create
@@ -41,21 +38,17 @@ class person : Fragment() {
         private lateinit var database: FirebaseDatabase
         private lateinit var storage: FirebaseStorage
         private lateinit var databaseReference: DatabaseReference
-        //For SelectImage
-        private lateinit var imageUri: Uri
+
         //Firebase Auth: ACcount
         private lateinit var firebaseAuth: FirebaseAuth
+        //Adapter:
+        private lateinit var postArrayList: ArrayList<postModel>
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         //Chung của Person
             binding = FragmentPersonBinding.inflate(layoutInflater)
@@ -63,29 +56,31 @@ class person : Fragment() {
             storage = FirebaseStorage.getInstance()
             database = FirebaseDatabase.getInstance()
 
+
+        //Adapter View
+        binding.recyclerViewPost.layoutManager = LinearLayoutManager(requireActivity())
+        postArrayList = arrayListOf<postModel>()
+
         //Retrive for Info
         retrivieInfo()
 
+        postRetrivie()
+        binding.sumbitProfile.setOnClickListener {
+            val intent = Intent(requireActivity(), accountSettingsActivity::class.java)
+            //fix cho fragment not attachted
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            startActivity(intent)
+        }
         //Select Image
-            binding.imageView3.setOnClickListener{
-//                pickImage()
-
-                val intent = Intent(requireActivity(), changeImage::class.java)
+            binding.imagePerson.setOnClickListener{
+               val intent = Intent(requireActivity(), changeImage::class.java)
                 //fix cho fragment not attachted
                 intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 startActivity(intent)
             }
-        //Upload Profile Info
-            binding.sumbitProfile.setOnClickListener {
-                if(binding.namePerson.text!!.isEmpty()){
-                    Toast.makeText(requireActivity(), "F1", Toast.LENGTH_SHORT).show()
-                }else{
-                    uploadInfo()
-                }
-            }
+
     return binding.root
     }
-
     private fun retrivieInfo() {
         //Retrive for Info
         databaseReference = FirebaseDatabase.getInstance().getReference("users")
@@ -94,42 +89,47 @@ class person : Fragment() {
                 override fun onDataChange(snapshot: DataSnapshot) {
 
                     val user: UserModel? = snapshot.getValue(UserModel::class.java)
-                    binding.namePerson.setText(user?.name)
-                    binding.emailPerson.setText(user?.email)
+                    binding.namePerson.text = user?.name
+                    binding.emailPerson.text = user?.email
+                    binding.BioPerson.text = user?.bio
                     //For Fix Null Image Crash
                     Glide.with(requireActivity())
                         .load(user?.imageUrl)
                         .fitCenter()
                         .fallback(R.drawable.notification_bg_normal_pressed)
-                        .into(binding.imageView3)
+                        .into(binding.imagePerson)
                 }
                 override fun onCancelled(error: DatabaseError) {
                     TODO("Not yet implemented")
                 }
-
             }
         )
     }
+    private fun postRetrivie() {
+        databaseReference = FirebaseDatabase.getInstance().getReference("posts")
 
-    //Upload Info của Profile User
-    private fun uploadInfo() {
-        //Chung CHo Update
-        databaseReference = Firebase.database.getReference("users")
+        databaseReference.orderByChild("timestamp").addValueEventListener(
+            object : ValueEventListener {
+                @SuppressLint("SuspiciousIndentation")
+                override fun onDataChange(snapshot: DataSnapshot) {
 
-            val user = UserModel(
-                name = binding.namePerson.text.toString(),
-                email = firebaseAuth.currentUser?.email,
-            )
-        //Tạo dữ liệu Sẽ Update
-        val editMap = mapOf(
-            "name" to user.name,
-            "email" to user.email,
+                    if (snapshot.exists()){
+                        postArrayList.clear()
+                        for(ds in snapshot.children){
+
+                            val postData = ds.getValue(postModel::class.java)
+                            if (postData?.uid == firebaseAuth.currentUser?.uid)
+                                postArrayList.add(postData!!)
+                        }
+                        postArrayList.reverse()
+                        binding.recyclerViewPost.adapter = postAdapter(requireActivity(),postArrayList)
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+            }
         )
-        val userId = firebaseAuth.uid
-        if (userId != null) {
-            databaseReference.child(userId).updateChildren(editMap)
-        }
-
     }
 
 }

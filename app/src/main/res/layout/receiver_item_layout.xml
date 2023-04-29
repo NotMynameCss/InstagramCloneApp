@@ -24,7 +24,12 @@
             android:textSize="16dp"
             android:textStyle="bold|normal" />
     </LinearLayout>
-
+    <TextView
+        android:id="@+id/timeStamp"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:text="timeStamp"
+        android:visibility="gone"/>
 
 
 </LinearLayout>

@@ -9,6 +9,7 @@ plugins {
 android {
     compileSdk 33
 
+
     defaultConfig {
         applicationId "edu.poly.instagramcloneapp"
         minSdk 24

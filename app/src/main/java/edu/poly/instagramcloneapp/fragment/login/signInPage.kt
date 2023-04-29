@@ -22,15 +22,10 @@ class signInPage : Fragment() {
     private lateinit var dbRef: DatabaseReference
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         //Chung của SignIn
         binding = FragmentSignInPageBinding.inflate(layoutInflater)

@@ -2,6 +2,7 @@ package edu.poly.instagramcloneapp.Adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +15,11 @@ import edu.poly.instagramcloneapp.R
 import edu.poly.instagramcloneapp.databinding.ReceiverItemLayoutBinding
 import edu.poly.instagramcloneapp.databinding.SentItemLayoutBinding
 import edu.poly.instagramcloneapp.model.MessageModel
-import org.json.JSONObject
 
 //Read Message : https://www.youtube.com/watch?v=ch0TdgXICjQ&t=68s
 
 //RecyclerView With Image: https://www.youtube.com/watch?v=0ok8e0JfIoo
+@Suppress("DEPRECATION")
 class MessageAdapter(private val context: Context, private var list:ArrayList<MessageModel>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private lateinit var senderRoom: String
 
@@ -41,6 +42,8 @@ class MessageAdapter(private val context: Context, private var list:ArrayList<Me
     @SuppressLint("SuspiciousIndentation")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val message = list[position]
+        val handler = Handler() //SetTimer
+
 
         senderRoom = message.senderId + message.receiverId
         if (holder.itemViewType == ITEM_SENT){
@@ -56,16 +59,23 @@ class MessageAdapter(private val context: Context, private var list:ArrayList<Me
                                 .placeholder(R.drawable.app_ic)
                                 .fitCenter()
                                 .into(viewHolder.binding.imageView9)
-
             }else{
                 viewHolder.binding.SendTextView.text = message.message
-            }
+                if (viewHolder.binding.timeStamp.visibility == View.GONE){
+                    viewHolder.binding.SendTextView.setOnClickListener {
 
+                        viewHolder.binding.timeStamp.visibility = View.VISIBLE
+                        viewHolder.binding.timeStamp.text = message.timestamp
+                        handler.postDelayed({
+                            viewHolder.binding.timeStamp.visibility = View.GONE
+                        },3000)// 1000 = 1s, sau 3s sẽ tự động mất
+                    }
+                }
+            }
         }else{
             val viewHolder = holder as ReceiverViewHolder
-            viewHolder.binding.receiverTextView.text = message.message
+            viewHolder.binding.receiverTextView.text = message.timestamp
         }
-
     }
 
     override fun getItemCount(): Int {
