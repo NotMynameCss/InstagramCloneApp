@@ -1,4 +1,4 @@
-package edu.poly.instagramcloneapp.activity
+package edu.poly.instagramcloneapp.activity.post
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

@@ -1,6 +1,5 @@
 package edu.poly.instagramcloneapp.fragment.login
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import edu.poly.instagramcloneapp.databinding.FragmentSignUpPageBinding
-import edu.poly.instagramcloneapp.activity.login.login
 //Email Verification: https://www.youtube.com/watch?v=8wQ8QacTIVA&t=389s
 
 class SignUpPage : Fragment() {
@@ -58,11 +56,11 @@ class SignUpPage : Fragment() {
                         ?.addOnFailureListener {
                             Toast.makeText(requireActivity(),it.toString(),Toast.LENGTH_SHORT).show()
                         }
-                    //Đổi Fragment
-                    val intent = Intent(requireActivity(), login::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-
-                    startActivity(intent)
+//                    //Đổi Fragment
+//                    val intent = Intent(requireActivity(), login::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+//
+//                    startActivity(intent)
                 }
                 else{
 

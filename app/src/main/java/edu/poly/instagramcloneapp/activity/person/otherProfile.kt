@@ -117,14 +117,16 @@ class otherProfile : AppCompatActivity() {
                     hashMap.put("email",email)
                     hashMap.put("imageUrl",imageUrl)
 
+
+
                     friendRef.child(user).child(uid).updateChildren(
                         hashMap as Map<String, Any>
                     ).addOnCompleteListener {
+                        friendRef.child(uid).child(user).updateChildren(hashMap as Map<String, Any>)
                         Toast.makeText(this, "Sent Request", Toast.LENGTH_SHORT).show()
                         if (it.isSuccessful){
                             if (CurrentState.equals("friend")){
                                 Toast.makeText(this, "You added friend", Toast.LENGTH_SHORT).show()
-
                                 binding.OtherAddFriendBtn.visibility = View.GONE
                                 binding.declineBtn.text = "Unfriend 1"
                                 binding.declineBtn.visibility = View.VISIBLE
@@ -189,10 +191,16 @@ class otherProfile : AppCompatActivity() {
                         CurrentState = "I_sent_pending"
                     }
                 }else{
-                    CurrentState = "Not_Found"
-                    binding.OtherAddFriendBtn.visibility = View.VISIBLE
-                    binding.declineBtn.visibility = View.GONE
-
+                    if (CurrentState.equals("Not_Found")){
+                        binding.OtherAddFriendBtn.text = "Add Friend"
+                        binding.OtherAddFriendBtn.visibility = View.VISIBLE
+                        binding.declineBtn.visibility = View.GONE
+                    }else{
+                        CurrentState = "friend"
+                        binding.declineBtn.text = "UnFriend"
+                        binding.declineBtn.visibility = View.VISIBLE
+                        binding.OtherAddFriendBtn.visibility = View.GONE
+                    }
                 }
             }
 
@@ -212,20 +220,22 @@ class otherProfile : AppCompatActivity() {
                         binding.declineBtn.visibility = View.VISIBLE
                     }
                 }else{
-                    CurrentState = "Not_Found"
-                    binding.OtherAddFriendBtn.text = "Add Friend"
-                    binding.OtherAddFriendBtn.visibility = View.VISIBLE
-                    binding.declineBtn.visibility = View.GONE
-
+                    if (CurrentState.equals("Not_Found")){
+                        binding.OtherAddFriendBtn.text = "Add Friend"
+                        binding.OtherAddFriendBtn.visibility = View.VISIBLE
+                        binding.declineBtn.visibility = View.GONE
+                    }else{
+                        CurrentState = "friend"
+                        binding.declineBtn.text = "UnFriend"
+                        binding.declineBtn.visibility = View.VISIBLE
+                        binding.OtherAddFriendBtn.visibility = View.GONE
+                    }
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
         })
-
-
     }
     private fun unFriend(uid: String, user: String){
         if (CurrentState.equals("friend")){

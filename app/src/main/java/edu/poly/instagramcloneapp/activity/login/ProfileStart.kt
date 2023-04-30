@@ -48,6 +48,7 @@ class ProfileStart : AppCompatActivity() {
                 Toast.makeText(this, "Plz Enter Name", Toast.LENGTH_SHORT).show()
             }else{
                 databaseReference.child(userId).setValue(editMap)
+                finish()
             }
         }
 

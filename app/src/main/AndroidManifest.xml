@@ -33,6 +33,13 @@
         android:theme="@style/Theme.InstagramCloneApp"
         tools:targetApi="31">
         <activity
+            android:name=".activity.post.editPostActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".activity.person.otherProfile"
             android:exported="false">
             <meta-data
@@ -40,7 +47,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activity.addPostActivity"
+            android:name=".activity.post.addPostActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
