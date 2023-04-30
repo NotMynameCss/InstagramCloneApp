@@ -232,24 +232,45 @@
                 android:layout_marginRight="5dp"
                 >
 
-                <ImageButton
-                    android:id="@+id/Other_AddFriends"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="1dp"
+
+                <Button
+                    android:id="@+id/Other_AddFriendBtn"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/add"
-                    tools:ignore="SpeakableTextPresentCheck" />
+                    android:text="AddFriend" />
 
-                <ImageButton
-                    android:id="@+id/Other_SendMessage"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="1dp"
-                    android:layout_height="49dp"
+                <Button
+                    android:id="@+id/declineBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_send"
-                    tools:ignore="SpeakableTextPresentCheck" />
+                    android:text="Decline"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/Other_MessageBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Message" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/button_black_background"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                >
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_post"
+                    android:layout_width="match_parent"
+                    android:layout_height="336dp"
+                    tools:listitem="@layout/posts_layout" />
 
             </LinearLayout>
 

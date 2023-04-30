@@ -65,6 +65,7 @@ class userAdapter(private val context: Context,private var recyclerViewSearch:Ar
             intent.putExtra("name",currentItem.name)
             intent.putExtra("email",currentItem.email)
             intent.putExtra("bio",currentItem.bio)
+            intent.putExtra("image",currentItem.imageUrl)
             context.startActivity(intent)
         }
     }
