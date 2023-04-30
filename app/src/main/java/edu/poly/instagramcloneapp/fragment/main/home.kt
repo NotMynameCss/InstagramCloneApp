@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.*
 
 import edu.poly.instagramcloneapp.Adapter.postAdapter
-import edu.poly.instagramcloneapp.activity.addPostActivity
+import edu.poly.instagramcloneapp.activity.post.addPostActivity
 
 import edu.poly.instagramcloneapp.databinding.FragmentHomeBinding
 import edu.poly.instagramcloneapp.model.postModel

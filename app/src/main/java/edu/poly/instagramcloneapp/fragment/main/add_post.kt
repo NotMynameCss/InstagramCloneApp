@@ -70,13 +70,12 @@ class add_post : Fragment() {
             }
         }
         adapter2.searchDataList(searchList)
-
     }
 
     private fun recylerRetrivie() {
-        databaseReference = FirebaseDatabase.getInstance().getReference("users")
+        databaseReference = FirebaseDatabase.getInstance().getReference("friend")
 
-        databaseReference?.addValueEventListener(
+        databaseReference?.child(firebaseAuth.currentUser?.uid.toString())?.addValueEventListener(
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
 
@@ -84,7 +83,7 @@ class add_post : Fragment() {
                         userArrayList.clear()
                         for(ds in snapshot.children){
                             val userData = ds.getValue(UserModel::class.java)
-                            if (userData?.uid != firebaseAuth.currentUser?.uid)
+
                                 userArrayList.add(userData!!)
                         }
                         binding.recyclerViewSearch.adapter = userAdapter(requireActivity(),userArrayList)
