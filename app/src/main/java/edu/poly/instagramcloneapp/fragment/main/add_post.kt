@@ -70,13 +70,12 @@ class add_post : Fragment() {
             }
         }
         adapter2.searchDataList(searchList)
-
     }
 
     private fun recylerRetrivie() {
-        databaseReference = FirebaseDatabase.getInstance().getReference("users")
+        databaseReference = FirebaseDatabase.getInstance().getReference("friend")
 
-        databaseReference?.addValueEventListener(
+        databaseReference?.child(firebaseAuth.currentUser?.uid.toString())?.addValueEventListener(
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
 
