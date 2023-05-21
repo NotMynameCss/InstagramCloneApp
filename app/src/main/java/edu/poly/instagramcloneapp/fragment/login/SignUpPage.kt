@@ -14,8 +14,8 @@ class SignUpPage : Fragment() {
 
     private lateinit var binding: FragmentSignUpPageBinding
 
-    //Firebase Auth
-    private lateinit var firebaseAuth: FirebaseAuth
+    //Firebase:
+        private lateinit var firebaseAuth: FirebaseAuth
 
 
     override fun onCreateView(
@@ -23,32 +23,25 @@ class SignUpPage : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        //Chung của firebase
-
+        //Chung:
             binding = FragmentSignUpPageBinding.inflate(layoutInflater)
             firebaseAuth = FirebaseAuth.getInstance()
-
-        //Button
-
+        //Action:
             binding.sumbitSignUp.setOnClickListener {
             signup()
         }
-
         //Cần cho onCreateView()
-        return binding.root
+            return binding.root
     }
 
     private fun signup(){
-        val email_User = binding.emailSignUp.text.toString()
+        val emailUser = binding.emailSignUp.text.toString()
         val password1 = binding.pass1SignUp.text.toString()
         val password2 = binding.pass2SignUp.text.toString()
 
-
-
-         if (email_User.isNotEmpty() && password1 == password2 && password1.isNotEmpty()){
-            firebaseAuth.createUserWithEmailAndPassword(email_User,password1).addOnCompleteListener{
+         if (emailUser.isNotEmpty() && password1 == password2 && password1.isNotEmpty()){
+            firebaseAuth.createUserWithEmailAndPassword(emailUser,password1).addOnCompleteListener{ it ->
                 if (it.isSuccessful){
-
                     firebaseAuth.currentUser?.sendEmailVerification()
                         ?.addOnSuccessListener {
                             Toast.makeText(requireActivity(),"SignUp,Plz Check Email",Toast.LENGTH_SHORT).show()
@@ -56,14 +49,8 @@ class SignUpPage : Fragment() {
                         ?.addOnFailureListener {
                             Toast.makeText(requireActivity(),it.toString(),Toast.LENGTH_SHORT).show()
                         }
-//                    //Đổi Fragment
-//                    val intent = Intent(requireActivity(), login::class.java)
-//                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-//
-//                    startActivity(intent)
                 }
                 else{
-
                     Toast.makeText(requireActivity(), it.exception.toString(), Toast.LENGTH_SHORT).show()
                 }
             }

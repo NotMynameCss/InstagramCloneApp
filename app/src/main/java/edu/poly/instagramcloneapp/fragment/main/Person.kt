@@ -15,21 +15,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 import com.google.firebase.storage.FirebaseStorage
-import edu.poly.instagramcloneapp.Adapter.postAdapter
-import edu.poly.instagramcloneapp.activity.person.accountSettingsActivity
-import edu.poly.instagramcloneapp.activity.person.changeImage
+import edu.poly.instagramcloneapp.adapter.PostAdapter
+import edu.poly.instagramcloneapp.activity.person.AccountSettingsActivity
+import edu.poly.instagramcloneapp.activity.person.ChangeImage
 
 import edu.poly.instagramcloneapp.databinding.FragmentPersonBinding
 import edu.poly.instagramcloneapp.model.UserModel
-import edu.poly.instagramcloneapp.model.postModel
+import edu.poly.instagramcloneapp.model.PostModel
 
-
-//Get Username,emai from currentUser: https://stackoverflow.com/questions/59117267/getting-currently-logged-in-users-id-in-firebase-auth-in-kotlin
-
-//Read Data: https://www.youtube.com/watch?v=_DtbxQ9EEhc&t=812s
-
-//* Update can alter Create
-class person : Fragment() {
+class Person : Fragment() {
 
     //Chung của Fragment
         private lateinit var binding:FragmentPersonBinding
@@ -38,11 +32,9 @@ class person : Fragment() {
         private lateinit var database: FirebaseDatabase
         private lateinit var storage: FirebaseStorage
         private lateinit var databaseReference: DatabaseReference
-
-        //Firebase Auth: ACcount
         private lateinit var firebaseAuth: FirebaseAuth
         //Adapter:
-        private lateinit var postArrayList: ArrayList<postModel>
+        private lateinit var postArrayList: ArrayList<PostModel>
 
 
     override fun onCreateView(
@@ -57,23 +49,21 @@ class person : Fragment() {
             database = FirebaseDatabase.getInstance()
 
 
-        //Adapter View
-        binding.recyclerViewPost.layoutManager = LinearLayoutManager(requireActivity())
-        postArrayList = arrayListOf<postModel>()
+        //View Post Adapter:
+            binding.recyclerViewPost.layoutManager = LinearLayoutManager(requireActivity())
+            postArrayList = arrayListOf<PostModel>()
+            postRetrivie()
+        //Action:
+            retrivieInfo()
 
-        //Retrive for Info
-        retrivieInfo()
-
-        postRetrivie()
-        binding.sumbitProfile.setOnClickListener {
-            val intent = Intent(requireActivity(), accountSettingsActivity::class.java)
-            //fix cho fragment not attachted
-            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-            startActivity(intent)
-        }
-        //Select Image
+            binding.sumbitProfile.setOnClickListener {
+                val intent = Intent(requireActivity(), AccountSettingsActivity::class.java)
+                //fix cho fragment not attachted
+                intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                startActivity(intent)
+            }
             binding.imagePerson.setOnClickListener{
-               val intent = Intent(requireActivity(), changeImage::class.java)
+               val intent = Intent(requireActivity(), ChangeImage::class.java)
                 //fix cho fragment not attachted
                 intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 startActivity(intent)
@@ -117,12 +107,12 @@ class person : Fragment() {
                         postArrayList.clear()
                         for(ds in snapshot.children){
 
-                            val postData = ds.getValue(postModel::class.java)
+                            val postData = ds.getValue(PostModel::class.java)
                             if (postData?.uid == firebaseAuth.currentUser?.uid)
                                 postArrayList.add(postData!!)
                         }
                         postArrayList.reverse()
-                        binding.recyclerViewPost.adapter = postAdapter(requireActivity(),postArrayList)
+                        binding.recyclerViewPost.adapter = PostAdapter(requireActivity(),postArrayList)
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {

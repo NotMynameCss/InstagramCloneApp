@@ -10,26 +10,11 @@ import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import edu.poly.instagramcloneapp.Adapter.userAdapter
+import edu.poly.instagramcloneapp.adapter.UserAdapter
 import edu.poly.instagramcloneapp.databinding.FragmentSearchBinding
 import edu.poly.instagramcloneapp.model.UserModel
 
-//Simple Recyler: https://www.youtube.com/watch?v=Y4S4KNJzmGI
-
-
-//Update: https://www.youtube.com/watch?v=srQ0Nq3mJ_M&t=139s
-
-// Retrivie + snapshot Data: https://www.youtube.com/watch?v=7YPbd6gRPyk&list=PLKqtGJUS11t-1s4bd_u6wyuBEEr2fRhMX
-
-//Retrivie + recylerview: https://www.youtube.com/watch?v=VVXKVFyYQdQ
-
-//Search RecylerVIew: https://www.youtube.com/watch?v=kGWN_Krbcms
-
-//* Retrivie : Bấm để nhận kết quả(search), Fetch Tự hiện kết quả(Profile)
-//* Snapshot có thể kiểm tra và chỉ gọi những gì tồn tại dù trong biến có thứ ko tồn tại
-
-
-class search : Fragment() {
+class Search : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
 
@@ -37,7 +22,7 @@ class search : Fragment() {
     private var firebaseDatabase: FirebaseDatabase?=null
     private var databaseReference: DatabaseReference?= null
     private lateinit var userArrayList: ArrayList<UserModel>
-    private lateinit var adapter2: userAdapter
+    private lateinit var useradapter2: UserAdapter
     private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreateView(
@@ -73,18 +58,18 @@ class search : Fragment() {
         return binding.root
     }
     private fun searchList(text:String){
-        //Cần cho Phần search
-        adapter2 = userAdapter(requireActivity(),userArrayList)
-        binding.recyclerViewSearch.adapter = adapter2
+        //Cần cho Phần Search
+        useradapter2 = UserAdapter(requireActivity(),userArrayList)
+        binding.recyclerViewSearch.adapter = useradapter2
 
-        //Bắt đầu search
+        //Bắt đầu Search
         val searchList = ArrayList<UserModel>()
         for (userdata in userArrayList){
             if (userdata.name?.lowercase()?.contains(text.lowercase()) == true){
                 searchList.add(userdata)
             }
         }
-        adapter2.searchDataList(searchList)
+        useradapter2.searchDataList(searchList)
 
     }
 
@@ -102,7 +87,7 @@ class search : Fragment() {
                                 if (userData?.uid != firebaseAuth.currentUser?.uid)
                                     userArrayList.add(userData!!)
                         }
-                        binding.recyclerViewSearch.adapter = userAdapter(requireActivity(),userArrayList)
+                        binding.recyclerViewSearch.adapter = UserAdapter(requireActivity(),userArrayList)
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {

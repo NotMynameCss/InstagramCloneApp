@@ -10,7 +10,7 @@
     android:layout_marginRight="5dp"
     app:cardElevation="5dp"
     android:id="@+id/layout_post"
-    tools:context=".activity.post.editPostActivity">
+    tools:context=".activity.post.EditPostActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,8 +62,16 @@
             android:layout_width="387dp"
             android:layout_height="160dp"
             android:layout_marginStart="10dp"
+            android:hint="write some post here"
             android:textColor="@color/colorPrimary"
             android:textSize="15dp" />
+
+        <ImageView
+            android:id="@+id/post_detail_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <RelativeLayout
             android:layout_width="match_parent"

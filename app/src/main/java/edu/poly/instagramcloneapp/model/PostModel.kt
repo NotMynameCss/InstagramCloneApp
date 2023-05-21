@@ -1,6 +1,6 @@
 package edu.poly.instagramcloneapp.model
 
-data class postModel(
+data class PostModel(
     val uid:String? = null,
     val email:String? = null,
     val image:String? = null,

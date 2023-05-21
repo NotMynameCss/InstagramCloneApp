@@ -18,4 +18,11 @@
     <string name="nguy_n_v_n_ph">Nguyễn Văn Phó</string>
     <string name="bio">Bio</string>
     <string name="username">username</string>
+    <string name="todo">TODO</string>
+    <string name="timestamp">timeStamp</string>
+    <string name="hello">TODO</string>
+    <string name="user_profile_name">user profile name</string>
+    <string name="user_name">user name</string>
+    <string name="follow">Follow</string>
+    <string name="edit_profile">Edit Profile</string>
 </resources>
