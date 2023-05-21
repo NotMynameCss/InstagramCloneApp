@@ -33,35 +33,35 @@
         android:theme="@style/Theme.InstagramCloneApp"
         tools:targetApi="31">
         <activity
-            android:name=".activity.post.editPostActivity"
+            android:name=".activity.post.EditPostActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".activity.person.otherProfile"
+            android:name=".activity.person.OtherProfile"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".activity.post.addPostActivity"
+            android:name=".activity.post.AddPostActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".activity.person.accountSettingsActivity"
+            android:name=".activity.person.AccountSettingsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".activity.person.changeImage"
+            android:name=".activity.person.ChangeImage"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -75,7 +75,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activity.chatActivity"
+            android:name=".activity.Chatactivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

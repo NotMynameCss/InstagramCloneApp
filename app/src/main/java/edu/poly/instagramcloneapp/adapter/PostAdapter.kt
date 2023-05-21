@@ -1,27 +1,29 @@
-package edu.poly.instagramcloneapp.Adapter
-
+package edu.poly.instagramcloneapp.adapter
+//Introduce: use for list Post In homefragment
+//How make This can see Video Youtube in all PostModel
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 //import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import edu.poly.instagramcloneapp.R
-import edu.poly.instagramcloneapp.activity.person.otherProfile
-import edu.poly.instagramcloneapp.activity.post.editPostActivity
-import edu.poly.instagramcloneapp.model.postModel
+import edu.poly.instagramcloneapp.activity.post.EditPostActivity
+import edu.poly.instagramcloneapp.model.PostModel
 
 
-//RecyclerView With Image: https://www.youtube.com/watch?v=0ok8e0JfIoo
-class postAdapter(private val context: Context, private var recyclerViewpost:ArrayList<postModel>): RecyclerView.Adapter<postAdapter.ViewHolder>() {
+class PostAdapter(private val context: Context, private var recyclerViewpost:ArrayList<PostModel>): RecyclerView.Adapter<PostAdapter.ViewHolder>() {
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val name: TextView = itemView.findViewById(R.id.user_name_search)
+        val username: TextView = itemView.findViewById(R.id.user_name_post)
         val content: TextView = itemView.findViewById(R.id.description)
-        val layout_post: CardView = itemView.findViewById(R.id.layout_post)
+        val imagebackground: ImageView = itemView.findViewById(R.id.post_background_Image)
+        val layoutpost: CardView = itemView.findViewById(R.id.layout_post)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,19 +33,34 @@ class postAdapter(private val context: Context, private var recyclerViewpost:Arr
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        //bind data with ViewHolder
+
         //We need an array of String
         val user = FirebaseAuth.getInstance().currentUser?.uid.toString()
         val currentItem = recyclerViewpost[position]
-        holder.name.text = currentItem.email
+
+        holder.username.text = currentItem.email
         holder.content.text = currentItem.content
+        if (currentItem.image != null){
+            holder.imagebackground.visibility = View.VISIBLE
+
+            Glide.with(context)
+                .load(currentItem.image)
+                .placeholder(R.drawable.app_ic)
+                .fitCenter()
+                .into(holder.imagebackground)
+        }else{
+            holder.imagebackground.visibility = View.GONE
+        }
         if (currentItem.uid == user){
-            holder.layout_post.setOnClickListener {
-                val intent = Intent(context, editPostActivity::class.java)
+            holder.layoutpost.setOnClickListener {
+                val intent = Intent(context, EditPostActivity::class.java)
+
                 intent.putExtra("uid",currentItem.uid)
                 intent.putExtra("email",currentItem.email)
                 intent.putExtra("content",currentItem.content)
+                intent.putExtra("image",currentItem.image)
                 intent.putExtra("timestamp",currentItem.timestamp)
+
                 context.startActivity(intent)
             }
         }

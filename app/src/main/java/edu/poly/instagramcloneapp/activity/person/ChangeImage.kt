@@ -19,7 +19,8 @@ import java.util.*
 
 //fix You cannot start a load for a destroyed activity:https://stackoverflow.com/questions/40326571/android-glide-erroryou-cannot-start-a-load-for-a-destroyed-activity
 
-class changeImage : AppCompatActivity() {
+@Suppress("DEPRECATION")
+class ChangeImage : AppCompatActivity() {
     private lateinit var binding:ActivityChangeImageBinding
 
     //Chung Của Firebase
@@ -32,19 +33,20 @@ class changeImage : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //Chung:
+            binding = ActivityChangeImageBinding.inflate(layoutInflater)
 
-        binding = ActivityChangeImageBinding.inflate(layoutInflater)
+            firebaseAuth = FirebaseAuth.getInstance()
+            storage = FirebaseStorage.getInstance()
+        //Action:
+            retrivieInfo()
 
-        firebaseAuth = FirebaseAuth.getInstance()
-        storage = FirebaseStorage.getInstance()
-        retrivieInfo()
-
-        binding.imageView.setOnClickListener {
-            pickImage()
-        }
-        binding.button2.setOnClickListener{
-            finish()
-        }
+            binding.imagePersonChangeView.setOnClickListener {
+                pickImage()
+            }
+            binding.button2.setOnClickListener{
+                finish()
+            }
         setContentView(binding.root)
     }
     private fun retrivieInfo() {
@@ -59,10 +61,10 @@ class changeImage : AppCompatActivity() {
                         .load(user?.imageUrl)
                         .fallback(R.drawable.notification_bg_normal_pressed)
                         .fitCenter()
-                        .into(binding.imageView)
+                        .into(binding.imagePersonChangeView)
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@changeImage, "Upload Failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ChangeImage, "Upload Failed", Toast.LENGTH_SHORT).show()
                 }
             }
         )
@@ -76,21 +78,19 @@ class changeImage : AppCompatActivity() {
     }
 
     //Use In upload Image To firebase
-    private fun uploadData() {
+    private fun uploadImage() {
 
         val uriName = Uri.parse("file://" + this.imageUri.path)
         val reference = storage.reference.child("Profile").child(uriName.lastPathSegment.toString())
         reference.putFile(imageUri).addOnCompleteListener {
             if (it.isSuccessful){
                 reference.downloadUrl.addOnSuccessListener { task ->
-                    uploadInfo2(task.toString())
+                    updateImagePerson(task.toString())
                 }
             }
         }
     }
-
-    //Update For Image Only
-    private fun uploadInfo2(imgUrl: String) {
+    private fun updateImagePerson(imgUrl: String) {
 
         //Chung cho Update
         databaseReference = Firebase.database.reference
@@ -111,8 +111,8 @@ class changeImage : AppCompatActivity() {
         if (data != null){
             if (requestCode == 100 && resultCode == Activity.RESULT_OK){ //Acitivity is need if this is fragment
                 imageUri = data.data!!
-                binding.imageView.setImageURI(imageUri)
-                uploadData()
+                binding.imagePersonChangeView.setImageURI(imageUri)
+                uploadImage()
             }
         }
 

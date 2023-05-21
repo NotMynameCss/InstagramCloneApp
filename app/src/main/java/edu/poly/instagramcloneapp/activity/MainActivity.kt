@@ -1,6 +1,7 @@
 package edu.poly.instagramcloneapp.activity
+//Introduce this activity: use for switching fragments:Home,Person,friend,Favorite,Search
 
-//Change start Acitivity: https://www.youtube.com/watch?v=6eES56mxfMs
+
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -12,46 +13,38 @@ import edu.poly.instagramcloneapp.databinding.ActivityMainBinding
 import edu.poly.instagramcloneapp.fragment.main.*
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var firebaseAuth: FirebaseAuth
-
-
+    //Chung:
+        private lateinit var binding: ActivityMainBinding
+    //Firebase:
+        private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        firebaseAuth = FirebaseAuth.getInstance()
-
-        //Bottom Navigation
-        replaceFragment(home())
-
-        //viewBinding
-        binding = ActivityMainBinding.inflate(layoutInflater)
-
-        //binding call function Navigation
-        binding.navView.setOnItemSelectedListener { //Kick hoat khi an an vao menu item
-            when(it.itemId){
-                R.id.nav_home -> replaceFragment(home())
-                R.id.nav_profile -> replaceFragment(person())
-                R.id.nav_add_post -> replaceFragment(add_post())
-                R.id.nav_favorite -> replaceFragment(favorite())
-                R.id.nav_search -> replaceFragment(search())
+        //Chung:
+            super.onCreate(savedInstanceState)
+            firebaseAuth = FirebaseAuth.getInstance()
+            binding = ActivityMainBinding.inflate(layoutInflater)
+            setContentView(binding.root)
+        //Action:
+            replaceFragment(Home())
+            binding.navView.setOnItemSelectedListener {
+                when(it.itemId){
+                    R.id.nav_home -> replaceFragment(Home())
+                    R.id.nav_profile -> replaceFragment(Person())
+                    R.id.nav_add_post -> replaceFragment(FriendList())
+                    R.id.nav_favorite -> replaceFragment(Favorite())
+                    R.id.nav_search -> replaceFragment(Search())
+                }
+                true
             }
-            true
-        }
-    setContentView(binding.root)
     }
-
-
-    //    create fragment for bottom_nav
     private fun replaceFragment(fragment: Fragment){
-        //Use supportFragmentManager to transaction
-        val  fragmentManager = supportFragmentManager                        //Who
-        val  fragmentTransaction = fragmentManager.beginTransaction()        //Who
-        fragmentTransaction.replace(R.id.frame_id,fragment)
-        fragmentTransaction.addToBackStack(null)
-        //finish
-        fragmentTransaction.commit()
+        //Need:
+            val  fragmentManager = supportFragmentManager                        //Who
+            val  fragmentTransaction = fragmentManager.beginTransaction()        //Who
+        //action:
+            fragmentTransaction.replace(R.id.frame_id,fragment)
+            fragmentTransaction.addToBackStack(null)
+
+            fragmentTransaction.commit()
     }
 }

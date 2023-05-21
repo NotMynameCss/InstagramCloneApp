@@ -5,28 +5,84 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/teal_200"
-    tools:context=".fragment.main.home"
+    tools:context=".fragment.main.Home"
     tools:ignore="MissingDefaultResource">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/profile_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:background="@android:color/white">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Home"
+                android:textSize="18dp"
+                android:maxLines="1"
+                android:textStyle="bold"
+                android:textColor="@color/colorBlack"
+                android:layout_centerVertical="true"
+                />
+
+            <ImageView
+                android:id="@+id/options_view"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/options"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+
+
+    </androidx.appcompat.widget.Toolbar>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <TextView
             android:id="@+id/post_text"
-            android:layout_width="290dp"
+            android:layout_width="406dp"
             android:layout_height="48dp"
             android:layout_marginTop="84dp"
             android:background="#FFFEFE"
             android:backgroundTint="#FFFEFE"
             android:ems="10"
             android:inputType="none"
-            android:text="How you feel today"
+            android:gravity="center"
+            android:text="How you feel today ? ..."
             android:textAlignment="center"
+            android:textColor="@color/colorBlue"
+            android:textSize="16sp"
+            android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+<!--        //My textView-->
+<!--        <TextView-->
+<!--            android:id="@+id/post_text"-->
+<!--            android:layout_width="290dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:layout_marginTop="84dp"-->
+<!--            android:background="#FFFEFE"-->
+<!--            android:backgroundTint="#FFFEFE"-->
+<!--            android:ems="10"-->
+<!--            android:inputType="none"-->
+<!--            android:text="How you feel today"-->
+<!--            android:textAlignment="center"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.495"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_post"

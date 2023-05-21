@@ -1,12 +1,5 @@
 package edu.poly.instagramcloneapp.fragment.main
 
-
-//Nguồn tham khảo:
-    // Connect firebase:  https://www.youtube.com/watch?v=YOT8P1PtJQg&t=618s
-    //Viewbinding in fragment: https://www.youtube.com/watch?v=v11x54y5YVc
-    //SignIn and SignOut : https://www.youtube.com/watch?v=idbxxkF1l6k&list=PLQFUWT9wUMWEXj9AVanMZg1tRUGr95aBr&index=10&t=784s
-    //Upload ảnh: https://www.youtube.com/watch?v=GmpD2DqQYVk
-
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -17,23 +10,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.*
 
-import edu.poly.instagramcloneapp.Adapter.postAdapter
-import edu.poly.instagramcloneapp.activity.post.addPostActivity
+import edu.poly.instagramcloneapp.adapter.PostAdapter
+import edu.poly.instagramcloneapp.activity.post.AddPostActivity
 
 import edu.poly.instagramcloneapp.databinding.FragmentHomeBinding
-import edu.poly.instagramcloneapp.model.postModel
+import edu.poly.instagramcloneapp.model.PostModel
 
-
-class home : Fragment() {
-
+class Home : Fragment() {
+    //Chung:
     private lateinit var binding: FragmentHomeBinding
-    //Firbase Image
-
     //Firebase:
         private lateinit var databaseReference: DatabaseReference
-
     //Adapter:
-        private lateinit var postArrayList: ArrayList<postModel>
+        private lateinit var postArrayList: ArrayList<PostModel>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,15 +32,15 @@ class home : Fragment() {
         //Chung của Home
             binding = FragmentHomeBinding.inflate(layoutInflater)
 
+        //Adapter List:
+            binding.recyclerViewPost.layoutManager = LinearLayoutManager(requireActivity())
 
-        binding.recyclerViewPost.layoutManager = LinearLayoutManager(requireActivity())
+            postArrayList = arrayListOf<PostModel>()
 
-        postArrayList = arrayListOf<postModel>()
-
-        recylerRetrivie()
+            recylerRetrivie()
 
         binding.postText.setOnClickListener {
-            val intent = Intent(requireActivity(), addPostActivity::class.java)
+            val intent = Intent(requireActivity(), AddPostActivity::class.java)
             startActivity(intent)
         }
         //Cần cho onCreateView()
@@ -69,11 +58,11 @@ class home : Fragment() {
                     if (snapshot.exists()){
                         postArrayList.clear()
                         for(ds in snapshot.children){
-                            val postData = ds.getValue(postModel::class.java)
+                            val postData = ds.getValue(PostModel::class.java)
                                 postArrayList.add(postData!!)
                         }
                         postArrayList.reverse()
-                        binding.recyclerViewPost.adapter = postAdapter(requireActivity(),postArrayList)
+                        binding.recyclerViewPost.adapter = PostAdapter(requireActivity(),postArrayList)
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {

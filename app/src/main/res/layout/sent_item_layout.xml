@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:id="@+id/linear1"
+        android:id="@+id/linearTextView"
         android:layout_height="64dp"
         android:layout_margin="20dp"
         android:background="@drawable/send_drawable"
@@ -32,7 +32,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linear2"
+        android:id="@+id/linearImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -43,7 +43,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imageView9"
+                android:id="@+id/sendImageView"
                 android:layout_width="184dp"
                 android:layout_height="111dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -53,7 +53,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
                 tools:srcCompat="@tools:sample/avatars"
-                />
+                android:contentDescription="@string/todo" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
@@ -61,7 +61,7 @@
         android:id="@+id/timeStamp"
         android:layout_width="210dp"
         android:layout_height="wrap_content"
-        android:text="timeStamp"
+        android:text="@string/timestamp"
         android:visibility="gone"/>
 
 

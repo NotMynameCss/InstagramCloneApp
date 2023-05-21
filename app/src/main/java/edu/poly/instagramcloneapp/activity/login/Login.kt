@@ -7,25 +7,25 @@ import androidx.fragment.app.Fragment
 import edu.poly.instagramcloneapp.R
 import edu.poly.instagramcloneapp.databinding.ActivitySignInBinding
 import edu.poly.instagramcloneapp.fragment.login.SignUpPage
-import edu.poly.instagramcloneapp.fragment.login.signInPage
+import edu.poly.instagramcloneapp.fragment.login.SignInPage
 
 //switch Fragment: https://www.youtube.com/watch?v=Q2HY58s9cHs
 
-class login : AppCompatActivity() {
+class Login : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignInBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        replaceFragment(signInPage())
+        replaceFragment(SignInPage())
 
         binding = ActivitySignInBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
 
         binding.signIn.setOnClickListener {
-            replaceFragment(signInPage())
+            replaceFragment(SignInPage())
         }
         binding.signUp.setOnClickListener {
             replaceFragment(SignUpPage())

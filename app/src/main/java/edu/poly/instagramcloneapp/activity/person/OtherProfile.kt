@@ -9,16 +9,16 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import edu.poly.instagramcloneapp.Adapter.postAdapter
+import edu.poly.instagramcloneapp.adapter.PostAdapter
 import edu.poly.instagramcloneapp.R
-import edu.poly.instagramcloneapp.activity.chatActivity
+import edu.poly.instagramcloneapp.activity.Chatactivity
 import edu.poly.instagramcloneapp.databinding.ActivityOtherProfileBinding
-import edu.poly.instagramcloneapp.model.postModel
+import edu.poly.instagramcloneapp.model.PostModel
 
 
 //Addfriend: https://www.youtube.com/watch?v=kyq1SQRzfUk&list=PLQFUWT9wUMWEXj9AVanMZg1tRUGr95aBr&index=12&t=76s
 //Unfriend Friend: https://www.youtube.com/watch?v=Tk3SDs7g_Ik&list=PLYx38U7gxBf0PyWzqW9JEv034wBlBDl8z&index=34
-class otherProfile : AppCompatActivity() {
+class OtherProfile : AppCompatActivity() {
     private lateinit var binding: ActivityOtherProfileBinding
     //AddFriends
     private lateinit var requestRef: DatabaseReference
@@ -27,7 +27,7 @@ class otherProfile : AppCompatActivity() {
     private var CurrentState:String = "Not_Found"
     private lateinit var firebaseAuth: FirebaseAuth
     //Post
-    private lateinit var postArrayList: ArrayList<postModel>
+    private lateinit var postArrayList: ArrayList<PostModel>
     private lateinit var databaseReference: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,11 +52,11 @@ class otherProfile : AppCompatActivity() {
 
         //Phần Post:
         binding.recyclerViewPost.layoutManager = LinearLayoutManager(this)
-        postArrayList = arrayListOf<postModel>()
+        postArrayList = arrayListOf<PostModel>()
         postRetrivie(uid)
 
         binding.OtherMessageBtn.setOnClickListener {
-            val intent = Intent(this, chatActivity::class.java)
+            val intent = Intent(this, Chatactivity::class.java)
             intent.putExtra("uid",uid)
             intent.putExtra("name",name)
             intent.putExtra("email",email)
@@ -127,8 +127,8 @@ class otherProfile : AppCompatActivity() {
                         if (it.isSuccessful){
                             if (CurrentState.equals("friend")){
                                 Toast.makeText(this, "You added friend", Toast.LENGTH_SHORT).show()
-                                binding.OtherAddFriendBtn.visibility = View.GONE
                                 binding.declineBtn.text = "Unfriend 1"
+                                binding.OtherAddFriendBtn.visibility = View.GONE
                                 binding.declineBtn.visibility = View.VISIBLE
                             }
                         }
@@ -152,6 +152,7 @@ class otherProfile : AppCompatActivity() {
                         binding.declineBtn.visibility = View.VISIBLE
                 }else{
                     CurrentState = "Not_Found"
+                    binding.OtherAddFriendBtn.text = "add_Friend 2"
                     binding.OtherAddFriendBtn.visibility = View.VISIBLE
                     binding.declineBtn.visibility = View.GONE
                 }
@@ -171,6 +172,7 @@ class otherProfile : AppCompatActivity() {
 
                 }else{
                     CurrentState = "Not_Found"
+                    binding.OtherAddFriendBtn.text = "add_Friend 3"
                     binding.OtherAddFriendBtn.visibility = View.VISIBLE
                     binding.declineBtn.visibility = View.GONE
 
@@ -191,16 +193,17 @@ class otherProfile : AppCompatActivity() {
                         CurrentState = "I_sent_pending"
                     }
                 }else{
-                    if (CurrentState.equals("Not_Found")){
-                        binding.OtherAddFriendBtn.text = "Add Friend"
+//                    if (CurrentState.equals("Not_Found")){
+                        binding.OtherAddFriendBtn.text = "Add Friend 4"
                         binding.OtherAddFriendBtn.visibility = View.VISIBLE
                         binding.declineBtn.visibility = View.GONE
-                    }else{
-                        CurrentState = "friend"
-                        binding.declineBtn.text = "UnFriend"
-                        binding.declineBtn.visibility = View.VISIBLE
-                        binding.OtherAddFriendBtn.visibility = View.GONE
-                    }
+//                    }
+//                    else{
+//                        CurrentState = "friend"
+//                        binding.declineBtn.text = "UnFriend 4"
+//                        binding.declineBtn.visibility = View.VISIBLE
+//                        binding.OtherAddFriendBtn.visibility = View.GONE
+//                    }
                 }
             }
 
@@ -214,19 +217,19 @@ class otherProfile : AppCompatActivity() {
                 if (snapshot.exists()){
                     if (snapshot.child("status").getValue().toString().equals("pending")){
                         CurrentState = "other_send_Pending"
-                        binding.OtherAddFriendBtn.text = "Acpect Friend"
+                        binding.OtherAddFriendBtn.text = "Acpect Friend 1"
                         binding.OtherAddFriendBtn.visibility = View.VISIBLE
-                        binding.declineBtn.text = "Decline Friend"
+                        binding.declineBtn.text = "Decline Friend 1"
                         binding.declineBtn.visibility = View.VISIBLE
                     }
                 }else{
                     if (CurrentState.equals("Not_Found")){
-                        binding.OtherAddFriendBtn.text = "Add Friend"
+                        binding.OtherAddFriendBtn.text = "Add Friend 5"
                         binding.OtherAddFriendBtn.visibility = View.VISIBLE
                         binding.declineBtn.visibility = View.GONE
                     }else{
                         CurrentState = "friend"
-                        binding.declineBtn.text = "UnFriend"
+                        binding.declineBtn.text = "UnFriend 5"
                         binding.declineBtn.visibility = View.VISIBLE
                         binding.OtherAddFriendBtn.visibility = View.GONE
                     }
@@ -244,21 +247,21 @@ class otherProfile : AppCompatActivity() {
 
                     Toast.makeText(this, "Unfriend Successfull", Toast.LENGTH_SHORT).show()
                     CurrentState = "Not_Found"
-                    binding.OtherAddFriendBtn.text = "Add Friend 4"
+                    binding.OtherAddFriendBtn.text = "Add Friend 6"
                     binding.OtherAddFriendBtn.visibility = View.VISIBLE
                     binding.declineBtn.visibility = View.GONE
         }
         else if (CurrentState.equals("other_send_Pending")){
                     declineFriendTest(uid,user)
                     CurrentState = "Not_Found"
-                    binding.OtherAddFriendBtn.text = "Add Friend 5"
+                    binding.OtherAddFriendBtn.text = "Add Friend 6"
                     binding.OtherAddFriendBtn.visibility = View.VISIBLE
                     binding.declineBtn.visibility = View.GONE
         }
         else if (CurrentState.equals("I_sent_pending")){
             declineFriendTest(uid,user)
             CurrentState = "Not_Found"
-            binding.OtherAddFriendBtn.text = "Add Friend 6"
+            binding.OtherAddFriendBtn.text = "Add Friend 7"
             binding.OtherAddFriendBtn.visibility = View.VISIBLE
             binding.declineBtn.visibility = View.GONE
         }
@@ -280,12 +283,12 @@ class otherProfile : AppCompatActivity() {
                         postArrayList.clear()
                         for(ds in snapshot.children){
 
-                            val postData = ds.getValue(postModel::class.java)
+                            val postData = ds.getValue(PostModel::class.java)
                             if (postData?.uid == uid)
                                 postArrayList.add(postData!!)
                         }
                         postArrayList.reverse()
-                        binding.recyclerViewPost.adapter = postAdapter(this@otherProfile,postArrayList)
+                        binding.recyclerViewPost.adapter = PostAdapter(this@OtherProfile,postArrayList)
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {
